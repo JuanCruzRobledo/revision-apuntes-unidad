@@ -57,7 +57,8 @@ markdown o texto. El flujo es el mismo; lo que cambia es la herramienta:
 2. Pedí estos datos (si el usuario ya los dio, no los repitas): materia y cursada; unidad (número y nombre); link a la
    sección del campus; carpeta con los documentos; carpeta con guiones/presentaciones/videos; carpeta con el código de
    ejemplo (si la materia tiene); nombre del **revisor de la unidad**; fuentes para la bibliografía; reglas técnicas de la
-   materia (por ejemplo, namespaces o versiones obligatorias); carpeta de trabajo.
+   materia (por ejemplo, namespaces o versiones obligatorias); carpeta de trabajo. Preguntá también lo que el formato no
+   define (subtítulo bajo el título, numeración de los temas, institución y fecha): se decide una vez y va a CRITERIOS.md.
 3. **Preflight**: corré `python scripts/preflight.py`. Si falta algo obligatorio, mostrale al tutor exactamente qué
    instalar y **no sigas** hasta resolverlo. Dependencias: skill `tup-campus-navigator` (lee el aula), Python 3.10+ con
    PyMuPDF, python-docx y Pillow; recomendados: Word o LibreOffice (revisar layout) y youtube-transcript-api.

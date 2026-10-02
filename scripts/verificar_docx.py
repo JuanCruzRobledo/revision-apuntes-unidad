@@ -19,7 +19,7 @@ PATRONES = {
     "guion_largo_en_oracion": r"\S — \S",
     "emoji": "[\U0001F300-\U0001FAFF☀-➿]",
     "relleno_ia": r"(Es importante destacar|Claro, aqu|Por supuesto|Espero que|En resumen,|En conclusión,|Como modelo de lenguaje)",
-    "marcador_plantilla": r"(\[Nombre|\[nombre|<completar>|\bTODO\b|Lorem ipsum)",
+    "marcador_plantilla": r"(\[Nombre|\[nombre|<completar>|(?-i:\bTODO\b)|Lorem ipsum)",
 }
 # Palabras que suelen ser falsos positivos: se muestran con contexto para que se lean antes de reportar.
 AMBIGUAS = {"usa", "uses", "considera", "tu"}

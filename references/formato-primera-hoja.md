@@ -49,3 +49,12 @@ el texto exacto para que el tutor lo incorpore en la herramienta de origen).
 ## Verificación
 `python scripts/verificar_docx.py ARCHIVO.docx --revisor "Prof. Nombre"` comprueba la primera hoja, el campo PAGE, los
 metadatos y la bibliografía numerada. Es un control mecánico: la lectura y la revisión del tutor siguen siendo obligatorias.
+
+## Consistencia entre documentos (decidir una vez, en CRITERIOS.md)
+- **Subtítulo** bajo el título: el formato no lo incluye. Decidí con el tutor si se conserva en todos o se quita en todos.
+- **Numeración del tema** (`Tema N.M`): confirmá el criterio (por ejemplo, un tema por actividad: 8.1, 8.2, ...).
+- **Nombre de la materia**: usá el del aula (por ejemplo "Programación III") en todos, aunque el documento viejo diga otra cosa.
+- **Institución y fecha**: no forman parte del formato; si el tutor las quiere, se definen dónde van antes de empezar.
+- **Bibliografía específica del tema**: cada documento cita fuentes pertinentes a lo que explica. Si repetís la misma lista en
+  todos, reportalo.
+

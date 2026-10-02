@@ -19,7 +19,10 @@ Cada subagente trabaja UNA actividad: el material de esa actividad ({{TIPOS_DE_M
 4. Versiones reales del curso (verificadas en los archivos de build del código de {{CARPETA_CODIGO}}): {{VERSIONES_REALES}}.
    Donde un documento cite otra versión, se actualiza a la real.
 5. Se conservan las ampliaciones correctas que no se ven en los videos (no recortar contenido correcto).
-6. {{DECISIONES_EXTRA}}
+6. Consistencia entre documentos: subtítulo bajo el título = {{SUBTITULO: conservar en todos / quitar en todos}};
+   numeración del tema = {{NUMERACION_TEMAS}}; nombre de la materia = "{{MATERIA}}"; institución y fecha = {{INSTITUCION_FECHA: no van / van en ...}}.
+7. Bibliografía ESPECÍFICA del tema de cada documento (verificada). Reportar si solo hay fuentes genéricas.
+8. {{DECISIONES_EXTRA}}
 
 ## 2. Formato obligatorio de la primera hoja (único formato)
 Materia: {{MATERIA}} / Unidad {{UNIDAD_NUM}}: {{UNIDAD_NOMBRE}} / Tema <N.M>: <tema del documento> /

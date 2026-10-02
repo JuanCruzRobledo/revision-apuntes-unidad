@@ -31,3 +31,20 @@ Leelas ante cualquier tropiezo. Cada una costó tiempo la primera vez.
 15. **Dos formatos de primera hoja en circulación**: aplicá solo el de `references/formato-primera-hoja.md`. Si ya hay
     documentos con otro formato, hay que rehacer su portada y mover la bibliografía; avisale al tutor.
 16. **Descargas de red de los subagentes** (fuentes, páginas): avisale al tutor qué se bajó y por qué.
+17. **El subtítulo de la primera hoja se decide UNA vez, en CRITERIOS.md.** En una corrida, cuatro de cinco subagentes lo
+    conservaron y uno lo eliminó: los documentos quedaron inconsistentes. El formato no lo menciona, así que el tutor decide
+    (conservarlo en todos o quitarlo en todos) y el corrector no lo resuelve por su cuenta.
+18. **La numeración de los temas ("Tema 8.2") es una suposición** si el formato no dice cómo se numera. Preguntala en la Fase 0 y
+    dejala escrita en CRITERIOS.md; si no, cada documento puede numerarse distinto.
+19. **La bibliografía por inercia se repite.** Si los subagentes reutilizan las mismas fuentes genéricas en todos los
+    documentos (por ejemplo la especificación y la documentación del producto), no son pertinentes al tema de cada uno.
+    Pedí en el corrector una bibliografía **específica del tema** (verificada); si solo hay fuentes genéricas, reportalo.
+20. **Exportar un .docx a PDF con Word falla con rutas cortas tipo `C:\USERS\<USUARIO~1>`** (el carácter `~`). Usá una ruta
+    simple sin `~` para la exportación.
+21. **El verificador no debe tratar "todo" como marcador de plantilla**: `TODO` solo cuenta en mayúsculas (corregido en
+    `verificar_docx.py`). Un patrón con `re.I` puede dar falsos positivos en español.
+22. **Al mover la bibliografía a la primera hoja, el documento puede perder una página** (la última solo la tenía a ella):
+    es normal, pero verificá el número de páginas antes y después y que no quede una hoja en blanco.
+23. **Conservá siempre la versión anterior** (`corregidos/_version_anterior/`) cuando se rehace una parte de un documento ya
+    corregido: el tutor puede querer volver atrás.
+
