@@ -1,0 +1,7 @@
+# Dependencias Python de la skill
+# python -m pip install -r requirements.txt
+pymupdf>=1.24
+python-docx>=1.1
+pillow>=10.0
+# Opcional: transcripciones de videos de YouTube (si falla o bloquea, se trabaja con los guiones)
+youtube-transcript-api>=1.0

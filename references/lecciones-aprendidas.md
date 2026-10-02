@@ -1,0 +1,33 @@
+# Lecciones aprendidas (de una corrida real de 5 actividades)
+
+Leelas ante cualquier tropiezo. Cada una costó tiempo la primera vez.
+
+1. **YouTube bloquea la IP** si se piden muchas transcripciones seguidas (`RequestBlocked`). Pausa larga entre pedidos y, al
+   primer bloqueo, parar. Intentar leer los subtítulos desde la página con JS puede colgar la pestaña; el panel "Mostrar
+   transcripción" no siempre carga. No uses proxies. Los guiones del tutor cubren el hueco.
+2. **El guion no es lo dicho en el video**: en la práctica el video dura bastante más (a veces el doble) y el vocabulario
+   compartido ronda 55–80 %. Útil como base, no como verdad exacta.
+3. **La marca de agua se mide por píxeles.** La herramienta deja una imagen en blanco en lugar de borrarla, así que contar
+   imágenes da falsos positivos; las portadas con foto oscura también. Medí el rectángulo del badge y mirá la esquina.
+4. **Las fuentes embebidas en PDF de Gamma son subconjuntos**: no se puede escribir texto nuevo con ellas. Hay que usar las
+   familias completas (OFL). Un subagente que "se rindió" por esto dejó pendiente un PDF que otro resolvió después.
+5. **Los hallazgos de "segunda persona" tienen muchos falsos positivos** ("usa", "considera" en tercera persona). Leelos en
+   contexto antes de reportarlos.
+6. **El párrafo vacío de la portada de un Word ya contiene el salto de página**; agregar otro deja la página 2 en blanco.
+7. **Un reporte de subagente no es evidencia.** Verificá con los scripts y mirando las páginas. Los subagentes admitieron
+   revisión visual parcial y detectaron errores propios solo al mirar el resultado.
+8. **Sin Word ni LibreOffice no hay revisión de layout automática**: decilo explícitamente en lugar de afirmar que "se ve
+   bien". Es parte de por qué la revisión manual del tutor es obligatoria.
+9. **Sesión cortada**: los subagentes en segundo plano pueden cortarse al cerrar la sesión. Retomalos con `SendMessage` y
+   revisá qué dejaron escrito.
+10. **Errores técnicos que los videos repiten** (valores atribuidos a la propiedad equivocada, nombres de columna distintos del
+    código real, dueño de la relación invertido): el documento se corrige con precisión técnica aunque el video diga otra cosa;
+    el desajuste con el video se le avisa al tutor.
+11. **Versiones y namespaces**: verificalos en los archivos de build y en los `persistence.xml`/configuración del código real,
+    no los asumas. Algunos videos mezclan convenciones viejas y nuevas.
+12. **Ilustraciones de IA con rótulos deformados** y **diagramas JPEG de baja resolución** no se arreglan por texto: reportalos.
+13. **El bloque "Actividad reciente" del campus** puede mostrar archivos que no son de la unidad: no los confundas.
+14. **El tutor puede tener los apuntes embebidos en un label** y no en una carpeta; hay que crear la carpeta al subir.
+15. **Dos formatos de primera hoja en circulación**: aplicá solo el de `references/formato-primera-hoja.md`. Si ya hay
+    documentos con otro formato, hay que rehacer su portada y mover la bibliografía; avisale al tutor.
+16. **Descargas de red de los subagentes** (fuentes, páginas): avisale al tutor qué se bajó y por qué.
