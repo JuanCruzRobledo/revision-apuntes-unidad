@@ -51,4 +51,9 @@ Leelas ante cualquier tropiezo. Cada una costó tiempo la primera vez.
     los subagentes solo habían mirado esas dos. El script resuelve las rutas cortas con `~`, compara las páginas del PDF con las que
     informa Word y avisa de páginas en blanco. El tamaño de página sale del Word (los generados con python-docx suelen ser Letter y
     no A4): si el tutor necesita A4, hay que cambiarlo en el Word antes de exportar.
+25. **Revisá los METADATOS de los commits antes del primer push, no solo los archivos.** En una publicación real el email del autor
+    (el de la configuración global de git) quedó visible en un repo público —API, `commit/<sha>` y `.patch`— y borrarlo exigió
+    reescribir el historial y finalmente recrear el repo. Configurá el email `ID+usuario@users.noreply.github.com` ANTES de commitear
+    y corré `scripts/escaneo_privacidad.py`. Un push forzado publica en el feed de eventos el SHA viejo (`before`), así que reescribir
+    el historial de un repo público no alcanza: hay que recrear el repo.
 

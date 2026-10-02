@@ -78,6 +78,7 @@ revision-apuntes-unidad/
 │   ├── verificar_docx.py         # patrones, campo PAGE, primera hoja, metadatos
 │   ├── verificar_pdf.py          # links y marca de Gamma por píxeles, patrones, cambios vs original
 │   ├── word_a_pdf.py             # exporta los Word corregidos a PDF (Word o LibreOffice) y verifica páginas
+│   ├── escaneo_privacidad.py     # control previo a publicar: emails reales en commits y datos personales en el contenido
 │   ├── transcribir_youtube.py    # transcripciones sin insistir ante bloqueo
 │   ├── quitar_marca_gamma.py     # quita el badge "Made with Gamma"
 │   ├── editar_pdf_texto.py       # edición de texto en PDF de Gamma (motor 1)
@@ -103,6 +104,15 @@ revision-apuntes-unidad/
 - **Fuentes incluidas**: las fuentes embebidas en los PDF de Gamma son subconjuntos de glifos y no sirven para escribir texto
   nuevo; con las familias completas, el texto editado queda idéntico al original.
 - **Un solo `CRITERIOS.md`** compartido: todas las actividades quedan consistentes.
+
+---
+
+## Antes de publicar un repo (esta u otra skill)
+
+`python scripts/escaneo_privacidad.py <repo>` revisa **el contenido y los metadatos de todos los commits**: se niega (código 1) si
+encuentra un email real de autor o committer (solo acepta `@users.noreply.github.com`), rutas locales de usuario, tokens o
+contraseñas. Un escaneo que solo mira archivos no ve el email del autor, que en un repo público queda visible (API y `.patch`) y
+no desaparece borrando el archivo. Se puede conectar como hook `pre-push`.
 
 ---
 
