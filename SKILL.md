@@ -2,9 +2,11 @@
 name: revision-apuntes-unidad
 description: >
   Revisa y corrige el material de apuntes de una unidad de una materia del campus Moodle (TUP/UTN u otro): documentos Word,
-  PDF de presentaciones (con o sin Gamma), pptx, markdown o texto. Valida calidad, redacción en tercera persona, tiempos
-  verbales homogéneos, rastros de IA, errores temáticos y técnicos, formato de primera hoja y bibliografía APA 7, con un
-  subagente DETECTOR y otro CORRECTOR por actividad y una compuerta OBLIGATORIA de revisión manual del tutor antes de subir.
+  PDF de presentaciones (con o sin Gamma), pptx, markdown o texto que estén publicados en el aula. Valida calidad, estilo de
+  redacción (por defecto tercera persona; configurable), tiempos verbales homogéneos, rastros de IA, errores temáticos y
+  técnicos, datos mínimos de portada (materia, unidad, tema y revisor) y bibliografía real, respetando el formato que el
+  archivo ya tiene. Usa un subagente DETECTOR y otro CORRECTOR por actividad y una compuerta OBLIGATORIA de revisión manual
+  del tutor antes de subir.
   Usala SIEMPRE que el usuario quiera auditar, revisar, validar o corregir los apuntes o el material de una unidad, aunque
   no nombre la skill: "revisá los apuntes de la unidad 4", "auditá el material de Programación 1", "corregí los Word y los
   PDF de la unidad", "verificá que esté en tercera persona", "sacale la marca de agua de Gamma a los apuntes", "chequeá que
@@ -38,6 +40,18 @@ automática no reemplaza que una persona mire cada archivo. Por eso:
 - No inventa bibliografía, capítulos, años, ediciones ni versiones: si no lo puede verificar, lo omite o lo avisa.
 - No modifica los originales: siempre trabaja sobre copias.
 
+## Alcance y principios
+- **Solo se audita el material que está en el aula** (el que ve el alumno). Lo que exista solo en la carpeta local y no esté
+  publicado se informa como "sobra", no se audita.
+- **Se respeta el formato que el archivo ya tiene.** No hay un formato estándar por ahora (habrá una plantilla más adelante):
+  se corrige el contenido (residuos de IA, redacción, errores técnicos, contraste con lo visto) y no se reformatea el
+  documento. Lo único estricto es la portada: materia, unidad, tema y **revisor** (quien hizo la auditoría). Ver
+  `references/formato-primera-hoja.md`.
+- **Cada materia y unidad trae material distinto.** No se presupone Gamma, PDF ni Word: se trabaja con lo que haya.
+- **Gamma es opcional**: todo lo específico de Gamma solo se activa si el aula tiene presentaciones de Gamma.
+- **Idioma y plataforma**: la skill está pensada para material en español y se probó en Windows. En macOS y Linux la
+  exportación de Word a PDF usa LibreOffice. Los patrones de los verificadores (segunda persona, relleno de IA) son de español.
+
 ## Material soportado
 Cualquier material de una unidad: Word (`.docx`), PDF de cualquier origen, PDF de presentación creado con Gamma, `.pptx`,
 markdown o texto. El flujo es el mismo; lo que cambia es la herramienta:
@@ -56,12 +70,19 @@ markdown o texto. El flujo es el mismo; lo que cambia es la herramienta:
 1. Avisá la regla de revisión manual (arriba).
 2. Pedí estos datos (si el usuario ya los dio, no los repitas): materia y cursada; unidad (número y nombre); link a la
    sección del campus; carpeta con los documentos; carpeta con guiones/presentaciones/videos; carpeta con el código de
-   ejemplo (si la materia tiene); nombre del **revisor de la unidad**; fuentes para la bibliografía; reglas técnicas de la
-   materia (por ejemplo, namespaces o versiones obligatorias); carpeta de trabajo. Preguntá también lo que el formato no
-   define (subtítulo bajo el título, numeración de los temas, institución y fecha): se decide una vez y va a CRITERIOS.md.
+   ejemplo (si la materia tiene); nombre del **revisor de la unidad** (va en la portada); fuentes para la bibliografía;
+   reglas técnicas de la materia (por ejemplo, versiones, namespaces o convenciones obligatorias; pueden no existir);
+   carpeta de trabajo.
+   **Estilo de redacción**: proponé el estilo por defecto (tercera persona e impersonal con "se", presente atemporal) y
+   preguntá si lo mantiene o prefiere otro. Si elige otro, anotalo en `CRITERIOS.md` y corré los verificadores con
+   `--sin-persona`.
+   **No preguntes** subtítulo, institución ni fecha: no hay formato estándar, se respeta lo que cada archivo ya tiene y no se
+   agrega nada nuevo a la portada. Tampoco preguntes la numeración del tema: se completa solo si falta (N = unidad, M = orden
+   de la actividad en el aula, que sale del inventario de la Fase 1).
 3. **Preflight**: corré `python scripts/preflight.py`. Si falta algo obligatorio, mostrale al tutor exactamente qué
-   instalar y **no sigas** hasta resolverlo. Dependencias: skill `tup-campus-navigator` (lee el aula), Python 3.10+ con
-   PyMuPDF, python-docx y Pillow; recomendados: Word o LibreOffice (revisar layout) y youtube-transcript-api.
+   instalar y **no sigas** hasta resolverlo. Obligatorio: Python 3.10+ con PyMuPDF, python-docx y Pillow. Para leer el aula
+   hace falta UNA de dos vías: la skill `tup-campus-navigator` (solo campus TUP) o Claude in Chrome con la sesión del tutor
+   abierta en su campus. Recomendados: Word o LibreOffice (revisar layout) y youtube-transcript-api.
    Si no hay forma de revisar el layout, decilo en voz alta: esa revisión queda 100% en manos del tutor.
 
 ### Fase 1 — Inventario del aula (solo lectura) → esperá el OK
@@ -81,7 +102,8 @@ Copiá guiones y transcripciones a `<trabajo>/fuentes/`. Avisá si un guion difi
 
 ### Fase 3 — CRITERIOS.md único → el tutor lo aprueba
 Armá `<trabajo>/CRITERIOS.md` desde `assets/templates/CRITERIOS.md.tpl` con **todas** las decisiones (estilo, reglas
-técnicas, versiones **verificadas en los archivos de build del código real**, formato de primera hoja, bibliografía).
+técnicas si las hay, versiones **verificadas en los archivos de build del código real** si la materia tiene código, datos
+mínimos de portada, bibliografía).
 Es la fuente única para todos los subagentes: así las actividades quedan consistentes. Mostralo y esperá el OK.
 
 ### Fase 4 — Piloto con UNA actividad → el tutor mira el resultado
@@ -119,9 +141,10 @@ Por qué dos roles: el informe queda como contrato verificable entre quien detec
 también audita tiende a justificar lo que ya cambió. Detalle en `references/subagentes.md`.
 
 ## Qué revisar (resumen; detalle en `references/criterios-redaccion.md`)
-Tercera persona e impersonal con "se"; tiempos verbales homogéneos (presente atemporal); rastros de IA; calidad general;
-contraste con lo visto (sobra / falta / contradice); corrección técnica contra el código real (la precisión técnica manda
-sobre lo que diga el video); cierre formal. Formato de primera hoja y bibliografía: `references/formato-primera-hoja.md`.
+Estilo de redacción de `CRITERIOS.md` (por defecto, tercera persona e impersonal con "se"); tiempos verbales homogéneos
+(presente atemporal); rastros de IA; calidad general; contraste con lo visto (sobra / falta / contradice); corrección técnica
+contra el código real si la materia lo tiene (la precisión técnica manda sobre lo que diga el video); cierre formal. Datos
+mínimos de portada y control de bibliografía: `references/formato-primera-hoja.md`.
 
 ## Estructura de salida
 ```

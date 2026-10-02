@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Verificación independiente de un PDF (presentación Gamma u otro).
 
-Uso: python verificar_pdf.py ARCHIVO.pdf [--original ORIGINAL.pdf]
+Uso: python verificar_pdf.py ARCHIVO.pdf [--original ORIGINAL.pdf] [--sin-persona] [--patron REGEX ...]
 - Links a gamma.app y marca "Made with Gamma" medida POR PÍXELES en el rectángulo del badge
-  (contar imágenes da falsos positivos: la herramienta deja una imagen en blanco; las portadas oscuras también engañan).
-- Patrones de redacción (segunda/primera persona, futuros, javax, emojis).
+  (solo aplica a PDF de Gamma; contar imágenes da falsos positivos: la herramienta deja una imagen en blanco).
+- Patrones de redacción (segunda/primera persona, futuros), con el estilo por defecto de tercera persona.
+  --sin-persona los desactiva (cuando CRITERIOS.md fija otro estilo).
+- --patron REGEX (repetible): suma patrones propios de la materia, por ejemplo una convención técnica obsoleta que
+  CRITERIOS.md prohíbe. Ejemplo: --patron "javax" en una materia que migró a otro namespace.
 - Con --original: cuántas páginas cambiaron respecto del original (solo deben cambiar las editadas).
 """
 import re
@@ -14,7 +17,6 @@ import fitz
 
 BADGE = fitz.Rect(754, 467, 893, 500)  # esquina inferior derecha en páginas de 900x507 pt (formato Gamma)
 PATRONES = {
-    "javax": r"javax",
     "segunda_persona": r"\b(tú|vos|tu|tus|puedes|podés|considera|usa|uses|imagina|recuerda|fíjate|avisame)\b",
     "primera_persona": r"\b(vamos|veremos|nuestr[oa]s?|hemos|aprendimos|esperamos|aplicaremos)\b",
     "futuro": r"\b\w{4,}(ará|arán|erá|erán|irá|irán)\b",
@@ -44,7 +46,12 @@ def main():
             print("   -> MIRAR esas páginas: una marca real da ~4000 px por página; si hay una sola página con foto oscura, es la portada.")
     texto = " ".join(p.get_text() for p in d)
     plano = re.sub(r"\s+", " ", texto)
-    for k, p in PATRONES.items():
+    patrones = {} if "--sin-persona" in sys.argv else dict(PATRONES)
+    args = sys.argv
+    for i, a in enumerate(args):
+        if a == "--patron" and i + 1 < len(args):
+            patrones[f"propio:{args[i + 1]}"] = args[i + 1]
+    for k, p in patrones.items():
         hits = list(re.finditer(p, plano, re.I))
         print(f"{k:16}{len(hits)}")
         for m in hits[:8]:

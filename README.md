@@ -21,14 +21,20 @@ Automatiza de punta a punta la auditoría y corrección de una unidad, **excepto
 6. **Verificación independiente** con scripts y **exportación de los Word a PDF**, sin fiarse del reporte de los subagentes.
 7. **Compuerta de revisión manual**: casillero por archivo; `ORDEN_DE_SUBIDA.md` solo se genera si el tutor confirmó todo.
 
-**Qué valida**: redacción en **tercera persona**, **tiempos verbales** homogéneos, **rastros de IA**, errores temáticos y técnicos
-(contra el código real del curso), formato de **primera hoja** (materia, unidad, tema, revisor y bibliografía **APA 7**
-verificada) y, si hay PDF de Gamma, **marca de agua** y texto.
+**Qué valida**: estilo de redacción (por defecto **tercera persona**, configurable), **tiempos verbales** homogéneos, **rastros
+de IA**, errores temáticos y técnicos (contra el código real del curso, si la materia lo tiene), **datos mínimos de portada**
+(materia, unidad, tema y revisor), que la **bibliografía** existente sea real y, si hay PDF de Gamma, **marca de agua** y texto.
 
-**Qué no hace**: no sube nada al aula, no inventa bibliografía ni versiones, no modifica los originales.
+**Qué no hace**: no sube nada al aula, no inventa bibliografía ni versiones, no modifica los originales y **no reformatea los
+documentos**: por ahora no hay formato estándar, así que se respeta el que cada archivo ya tiene (cuando haya una plantilla
+oficial, se incorpora). Solo se audita el material que está publicado en el aula.
 
-Funciona con cualquier tipo de material de una unidad. Word y PDF de Gamma son los ejemplos: lo específico de Gamma solo se
-activa si hay presentaciones de Gamma, y el Word formal es opcional (puede que la unidad ya lo traiga).
+Funciona con cualquier tipo de material de una unidad, que puede variar entre materias. Word y PDF de Gamma son los ejemplos: lo
+específico de Gamma es opcional y solo se activa si hay presentaciones de Gamma, y el Word formal también es opcional.
+
+**Alcance y límites**: pensada para material en español (los patrones de los verificadores son de español) y probada en
+Windows; en macOS y Linux la exportación de Word a PDF usa LibreOffice. No se probó con materias distintas de las del autor:
+si la usás en otra, conviene revisar el piloto de la Fase 4 con especial atención.
 
 ---
 
@@ -44,7 +50,7 @@ La skill queda disponible para tu agente y se carga sola cuando pedís revisar, 
 
 | Qué | Para qué | Cómo |
 |---|---|---|
-| **Skill `tup-campus-navigator`** | Leer el aula (solo lectura) | `git clone https://github.com/Group-Active-IA/Skill-Moodle.git ~/.claude/skills/tup-campus-navigator` y `bash ~/.claude/skills/tup-campus-navigator/install.sh` (en Windows, desde Git Bash). Requiere acceso al repo. Alternativa: Claude in Chrome con tu sesión del campus abierta |
+| **Una vía para leer el aula** (solo lectura) | Inventario del aula | Skill `tup-campus-navigator` (solo campus TUP): `git clone https://github.com/Group-Active-IA/Skill-Moodle.git ~/.claude/skills/tup-campus-navigator` y `bash ~/.claude/skills/tup-campus-navigator/install.sh` (en Windows, desde Git Bash); requiere acceso al repo. **O** Claude in Chrome con tu sesión del campus abierta (sirve para cualquier campus) |
 | Python 3.10+, PyMuPDF, python-docx, Pillow | Extraer, verificar y editar documentos y PDF | `pip install -r requirements.txt` |
 | Microsoft Word o LibreOffice | Revisar el layout de los `.docx` (exportar a PDF) | Recomendado. Sin esto, la revisión visual del Word queda 100 % a cargo del tutor |
 | youtube-transcript-api | Transcripciones de videos | Opcional (incluida en `requirements.txt`). Si YouTube bloquea, se trabaja con los guiones |
@@ -75,8 +81,8 @@ revision-apuntes-unidad/
 ├── scripts/
 │   ├── preflight.py              # verifica dependencias y avisa qué instalar
 │   ├── extraer_docx.py           # texto del Word con párrafos numerados
-│   ├── verificar_docx.py         # patrones, campo PAGE, primera hoja, metadatos
-│   ├── verificar_pdf.py          # links y marca de Gamma por píxeles, patrones, cambios vs original
+│   ├── verificar_docx.py         # patrones, campo PAGE, datos mínimos de portada, metadatos (--sin-persona)
+│   ├── verificar_pdf.py          # marca de Gamma por píxeles, patrones, cambios vs original (--sin-persona, --patron)
 │   ├── word_a_pdf.py             # exporta los Word corregidos a PDF (Word o LibreOffice) y verifica páginas
 │   ├── escaneo_privacidad.py     # control previo a publicar: emails reales en commits y datos personales en el contenido
 │   ├── transcribir_youtube.py    # transcripciones sin insistir ante bloqueo

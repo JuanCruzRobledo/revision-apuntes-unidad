@@ -46,10 +46,12 @@ def main():
     chequeo(OBLIG, modulo("docx"), "python-docx", "pip install python-docx")
     chequeo(OBLIG, modulo("fitz"), "PyMuPDF (fitz)", "pip install pymupdf")
     chequeo(OBLIG, modulo("PIL"), "Pillow", "pip install pillow")
-    chequeo(OBLIG, skill_instalada("tup-campus-navigator"), "skill tup-campus-navigator (lee el aula)",
+    # Leer el aula admite dos vías: la skill del campus TUP o Claude in Chrome (no detectable desde Python)
+    chequeo(OPC, skill_instalada("tup-campus-navigator"), "skill tup-campus-navigator (lee el aula, solo campus TUP)",
             "git clone https://github.com/Group-Active-IA/Skill-Moodle.git ~/.claude/skills/tup-campus-navigator\n"
             "      bash ~/.claude/skills/tup-campus-navigator/install.sh   (en Windows, desde Git Bash)\n"
-            "      Si no tenés acceso al repo, pedilo a coordinación. Alternativa: Claude in Chrome con tu sesión del campus abierta.")
+            "      Si no tenés acceso al repo, o tu campus es otro: usá Claude in Chrome con tu sesión del campus abierta.\n"
+            "      Hace falta UNA de las dos vías para leer el aula.")
     lo = word_o_libreoffice()
     chequeo(OPC, lo is not None, "Microsoft Word o LibreOffice (revisar el layout de los .docx)",
             "Instalar LibreOffice (libreoffice.org). Sin esto la revisión visual del Word queda 100% a cargo del tutor.", lo or "")

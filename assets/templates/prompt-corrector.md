@@ -12,13 +12,15 @@ clonando párrafos equivalentes; NO regeneres desde cero. Si insertás párrafos
 TAREA
 1. Aplicá TODOS los hallazgos del informe (ajustando sus propuestas a las decisiones de CRITERIOS.md). Si no podés aplicar
    uno, no lo asumas: dejalo "no aplicado" con el motivo.
-2. Primera hoja con el formato obligatorio (materia, unidad, tema, revisor, bibliografía APA 7 numerada y VERIFICADA con
-   búsqueda web; sin inventar capítulos), pie con numeración real (campo PAGE), propiedades del archivo (autor/revisor y fecha
-   de hoy; sin rastros de python-docx). Trampa conocida: el párrafo vacío de la portada ya contiene el salto de página.
+2. Portada: asegurá solo los datos mínimos (materia, unidad, tema, revisor) sin cambiar el formato que el archivo ya tiene.
+   Si el archivo trae bibliografía, verificá con búsqueda web que sea real (sin inventar capítulos, años ni ediciones) y no la
+   muevas ni la reformatees. Pie con numeración real (campo PAGE) si el documento ya numera, propiedades del archivo
+   (autor/revisor y fecha de hoy; sin rastros de python-docx). Trampa conocida: el párrafo vacío de la portada puede contener
+   el salto de página.
 3. {{TAREA_GAMMA}}
-4. VERIFICACIÓN OBLIGATORIA: releé el resultado completo; python scripts/verificar_docx.py / verificar_pdf.py (esperado 0 casos
-   de segunda/primera persona, futuros, markdown, emojis, guiones largos, salvo código/URLs; leé cada coincidencia en
-   contexto); campo PAGE; layout (exportá a PDF si hay Word/LibreOffice y MIRÁ las páginas; si no hay, DECILO explícitamente
+4. VERIFICACIÓN OBLIGATORIA: releé el resultado completo; python scripts/verificar_docx.py / verificar_pdf.py (con el estilo
+   por defecto, esperado 0 casos de segunda/primera persona, futuros, markdown, emojis, guiones largos, salvo código/URLs;
+   si CRITERIOS.md fija otro estilo, correlos con --sin-persona; leé cada coincidencia en contexto); campo PAGE; layout (exportá a PDF si hay Word/LibreOffice y MIRÁ las páginas; si no hay, DECILO explícitamente
    en lugar de afirmar que se ve bien).
 
 ENTREGABLES: el/los archivo(s) corregido(s) en corregidos/Actividad_{{N}}/ con los nombres de CRITERIOS.md y

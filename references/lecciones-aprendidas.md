@@ -28,14 +28,17 @@ Leelas ante cualquier tropiezo. Cada una costó tiempo la primera vez.
 12. **Ilustraciones de IA con rótulos deformados** y **diagramas JPEG de baja resolución** no se arreglan por texto: reportalos.
 13. **El bloque "Actividad reciente" del campus** puede mostrar archivos que no son de la unidad: no los confundas.
 14. **El tutor puede tener los apuntes embebidos en un label** y no en una carpeta; hay que crear la carpeta al subir.
-15. **Dos formatos de primera hoja en circulación**: aplicá solo el de `references/formato-primera-hoja.md`. Si ya hay
-    documentos con otro formato, hay que rehacer su portada y mover la bibliografía; avisale al tutor.
+15. **[En pausa hasta que exista la plantilla oficial]** Dos formatos de primera hoja en circulación: esta lección nació cuando
+    había un formato único y se rehacían las portadas. Hoy la skill respeta el formato de cada archivo y solo exige los datos
+    mínimos de portada (`references/formato-primera-hoja.md`). Si conviven formatos distintos, avisale al tutor y no los unifiques.
 16. **Descargas de red de los subagentes** (fuentes, páginas): avisale al tutor qué se bajó y por qué.
-17. **El subtítulo de la primera hoja se decide UNA vez, en CRITERIOS.md.** En una corrida, cuatro de cinco subagentes lo
-    conservaron y uno lo eliminó: los documentos quedaron inconsistentes. El formato no lo menciona, así que el tutor decide
-    (conservarlo en todos o quitarlo en todos) y el corrector no lo resuelve por su cuenta.
-18. **La numeración de los temas ("Tema 8.2") es una suposición** si el formato no dice cómo se numera. Preguntala en la Fase 0 y
-    dejala escrita en CRITERIOS.md; si no, cada documento puede numerarse distinto.
+17. **Los subagentes no deben decidir por su cuenta el subtítulo ni otros detalles de portada.** En una corrida, cuatro de cinco
+    subagentes conservaron el subtítulo y uno lo eliminó: los documentos quedaron inconsistentes. Con la regla vigente (se
+    respeta el formato de cada archivo) la consigna es simple y vale para todos: no se agrega ni se quita nada de la portada
+    salvo los datos mínimos. Cuando llegue la plantilla oficial, este punto se decide ahí, una vez, en CRITERIOS.md.
+18. **La numeración de los temas ("Tema 8.2") era una suposición** si el formato no la define. Hoy solo se completa cuando
+    falta, con una regla fija: N = unidad, M = orden de la actividad en el aula (sale del inventario de la Fase 1). Si el archivo
+    ya trae otra numeración, se respeta y se avisa si no es coherente entre archivos.
 19. **La bibliografía por inercia se repite.** Si los subagentes reutilizan las mismas fuentes genéricas en todos los
     documentos (por ejemplo la especificación y la documentación del producto), no son pertinentes al tema de cada uno.
     Pedí en el corrector una bibliografía **específica del tema** (verificada); si solo hay fuentes genéricas, reportalo.
@@ -43,8 +46,9 @@ Leelas ante cualquier tropiezo. Cada una costó tiempo la primera vez.
     simple sin `~` para la exportación.
 21. **El verificador no debe tratar "todo" como marcador de plantilla**: `TODO` solo cuenta en mayúsculas (corregido en
     `verificar_docx.py`). Un patrón con `re.I` puede dar falsos positivos en español.
-22. **Al mover la bibliografía a la primera hoja, el documento puede perder una página** (la última solo la tenía a ella):
-    es normal, pero verificá el número de páginas antes y después y que no quede una hoja en blanco.
+22. **Si por algún motivo cambia la estructura del documento, el número de páginas puede variar** (por ejemplo, al sacar una
+    página que solo tenía la bibliografía): verificá las páginas antes y después y que no quede una hoja en blanco. Con la regla
+    actual no se mueve la bibliografía, así que no debería pasar.
 23. **Conservá siempre la versión anterior** (`corregidos/_version_anterior/`) cuando se rehace una parte de un documento ya
     corregido: el tutor puede querer volver atrás.
 24. **Exportá los Word a PDF con `scripts/word_a_pdf.py`** y revisá todas las páginas (hoja de contactos), no solo la 1 y la 2:

@@ -3,7 +3,9 @@
 Se aplican a TODO el material (Word, texto de diapositivas). Leé el documento **completo**, no por muestreo, y
 complementá con búsqueda por patrones (`scripts/verificar_docx.py`, `scripts/verificar_pdf.py`).
 
-## 1. Tercera persona e impersonal
+## 1. Tercera persona e impersonal (estilo por defecto)
+Es el estilo que la skill propone. El tutor puede elegir otro en la Fase 0; en ese caso este apartado se reemplaza por lo que
+diga `CRITERIOS.md` y los verificadores se corren con `--sin-persona`.
 - Prohibido: segunda persona (tú, vos, tu/tus, imperativos como "recordá", "considera", "usa", "evita", "fíjate") y
   primera persona (vamos a ver, veremos, nuestro/a, hemos, aprendimos, esperamos, agregamos).
 - Preferí construcciones con "se" ("se define", "se utiliza") y voz pasiva solo donde suene natural; **no** conviertas todo
@@ -43,12 +45,14 @@ inconsistencias entre partes del mismo documento.
 - **Contradice**: sintaxis, anotación o terminología distinta de la que se muestra.
 
 ## 6. Corrección técnica
-**La precisión técnica manda sobre lo que diga el video o la presentación.** Contrastá el código y las afirmaciones con:
-(1) el código real del curso (proyectos de la materia, solo lectura), (2) los archivos de build para las **versiones reales**
-(no las asumas), (3) documentación oficial. Casos típicos: un valor atribuido a la propiedad equivocada, un nombre de
-columna distinto del real, el dueño de una relación mal indicado, ejemplos con atributos que la entidad no declara,
-genéricos omitidos (`List` en vez de `List<X>`), imports ausentes, recursos sin cerrar. Si no podés ejecutar el código,
-decilo y bajá la severidad de lo que dependa de la ejecución.
+**La precisión técnica manda sobre lo que diga el video o la presentación.** Contrastá las afirmaciones (y el código, si la
+materia lo tiene) con: (1) el código real del curso (proyectos de la materia, solo lectura), (2) los archivos de build para
+las **versiones reales** (no las asumas), (3) documentación oficial. Si la materia no tiene código (por ejemplo, matemática o
+estadística), se contrasta contra la bibliografía y la documentación oficial. Casos típicos, de una materia con Java/JPA y
+que cambian según la materia: un valor atribuido a la propiedad equivocada, un nombre de columna distinto del real, el dueño
+de una relación mal indicado, ejemplos con atributos que la entidad no declara, genéricos omitidos (`List` en vez de
+`List<X>`), imports ausentes, recursos sin cerrar. Si no podés ejecutar el código, decilo y bajá la severidad de lo que
+dependa de la ejecución.
 
 ## 7. Severidad
 - **Alta**: error técnico/conceptual, incumplimiento de un requisito explícito (segunda persona, falta bibliografía).
