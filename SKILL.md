@@ -42,7 +42,7 @@ automática no reemplaza que una persona mire cada archivo. Por eso:
 Cualquier material de una unidad: Word (`.docx`), PDF de cualquier origen, PDF de presentación creado con Gamma, `.pptx`,
 markdown o texto. El flujo es el mismo; lo que cambia es la herramienta:
 - **Word**: se extrae con `scripts/extraer_docx.py`, se corrige sobre una copia conservando el aspecto, se verifica con
-  `scripts/verificar_docx.py`.
+  `scripts/verificar_docx.py`, y se **exporta a PDF** con `scripts/word_a_pdf.py` (ver Fase 6).
 - **PDF de Gamma** (opcional, solo si hay): marca de agua y edición de texto en el lugar. Leé `references/gamma-pdf.md`.
 - **Otros PDF/pptx/texto**: se revisan por contenido y redacción; si no se pueden editar en el lugar, el corrector deja el
   texto exacto a cambiar por página/diapositiva para que el tutor lo corrija en la herramienta de origen.
@@ -95,7 +95,10 @@ Si un subagente se corta, retomalo con `SendMessage` y revisá qué alcanzó a e
 
 ### Fase 6 — Verificación independiente
 No te fíes de lo que reporta cada subagente: verificá vos con `scripts/verificar_docx.py` y `scripts/verificar_pdf.py` y
-mirá las páginas editadas. **Leé en contexto cada coincidencia de patrón antes de reportarla**: muchas son falsos positivos
+mirá las páginas editadas. **Exportá cada Word corregido a PDF** con `scripts/word_a_pdf.py` (usa Microsoft Word y, si no hay,
+LibreOffice; avisa si el número de páginas no coincide o hay páginas en blanco) y revisá **todas las páginas**, no solo la 1 y la
+2: armá una hoja de contactos con una fila por documento para detectar tablas cortadas, código desbordado o huecos. El PDF
+exportado es un entregable más y entra también en la revisión manual. **Leé en contexto cada coincidencia de patrón antes de reportarla**: muchas son falsos positivos
 ("usa" en tercera persona, "considera" como verbo del sujeto). La marca de agua se verifica por píxeles, no contando imágenes.
 
 ### Fase 7 — Compuerta de revisión manual (obligatoria)
@@ -139,4 +142,4 @@ Numeración por actividad y sin sufijos "(1)" ni "(2)". Los duplicados se borran
 | `references/subagentes.md` | Antes de lanzar detector/corrector |
 | `references/gamma-pdf.md` | Solo si hay PDF de Gamma |
 | `references/lecciones-aprendidas.md` | Ante cualquier tropiezo |
-| `scripts/` | `preflight`, `extraer_docx`, `verificar_docx`, `verificar_pdf`, `transcribir_youtube`, `quitar_marca_gamma`, `gamma_editar`, `editar_pdf_texto`, `comparar_pdf`, `compuerta_revision` |
+| `scripts/` | `preflight`, `extraer_docx`, `verificar_docx`, `verificar_pdf`, `word_a_pdf`, `transcribir_youtube`, `quitar_marca_gamma`, `gamma_editar`, `editar_pdf_texto`, `comparar_pdf`, `compuerta_revision` |

@@ -47,4 +47,8 @@ Leelas ante cualquier tropiezo. Cada una costó tiempo la primera vez.
     es normal, pero verificá el número de páginas antes y después y que no quede una hoja en blanco.
 23. **Conservá siempre la versión anterior** (`corregidos/_version_anterior/`) cuando se rehace una parte de un documento ya
     corregido: el tutor puede querer volver atrás.
+24. **Exportá los Word a PDF con `scripts/word_a_pdf.py`** y revisá todas las páginas (hoja de contactos), no solo la 1 y la 2:
+    los subagentes solo habían mirado esas dos. El script resuelve las rutas cortas con `~`, compara las páginas del PDF con las que
+    informa Word y avisa de páginas en blanco. El tamaño de página sale del Word (los generados con python-docx suelen ser Letter y
+    no A4): si el tutor necesita A4, hay que cambiarlo en el Word antes de exportar.
 

@@ -18,7 +18,7 @@ Automatiza de punta a punta la auditoría y corrección de una unidad, **excepto
 4. **Criterios únicos** (`CRITERIOS.md`) que el tutor aprueba y que comparten todos los subagentes.
 5. **Piloto con una actividad**, y después **el resto en paralelo**: un **detector** (solo lectura, escribe el informe de
    hallazgos) y un **corrector** (aplica sobre una copia y entrega el archivo corregido y el registro de cambios).
-6. **Verificación independiente** con scripts, sin fiarse del reporte de los subagentes.
+6. **Verificación independiente** con scripts y **exportación de los Word a PDF**, sin fiarse del reporte de los subagentes.
 7. **Compuerta de revisión manual**: casillero por archivo; `ORDEN_DE_SUBIDA.md` solo se genera si el tutor confirmó todo.
 
 **Qué valida**: redacción en **tercera persona**, **tiempos verbales** homogéneos, **rastros de IA**, errores temáticos y técnicos
@@ -77,6 +77,7 @@ revision-apuntes-unidad/
 │   ├── extraer_docx.py           # texto del Word con párrafos numerados
 │   ├── verificar_docx.py         # patrones, campo PAGE, primera hoja, metadatos
 │   ├── verificar_pdf.py          # links y marca de Gamma por píxeles, patrones, cambios vs original
+│   ├── word_a_pdf.py             # exporta los Word corregidos a PDF (Word o LibreOffice) y verifica páginas
 │   ├── transcribir_youtube.py    # transcripciones sin insistir ante bloqueo
 │   ├── quitar_marca_gamma.py     # quita el badge "Made with Gamma"
 │   ├── editar_pdf_texto.py       # edición de texto en PDF de Gamma (motor 1)
