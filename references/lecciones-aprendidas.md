@@ -74,3 +74,6 @@ Leelas ante cualquier tropiezo. Cada una costó tiempo la primera vez.
 - **`<etiqueta>` suelta en un título o párrafo es HTML y el navegador la oculta** (`<persistence-unit>`, `<class>`). Los
   convertidores escapan `<`, `>` y `&` en el texto corriente; dentro de bloques de código no hace falta. Lo detectó
   `verificar_fidelidad.py pdf` en la prueba con un Word de Prog3: sin esa comprobación el PDF salía con palabras faltantes.
+- **Ilustraciones con pie**: una imagen chica con un título y un texto justo debajo (misma columna) sale como figura con pie
+  (`<figure>` + `<figcaption>`) y al ancho proporcional del original; un diagrama ancho no lleva pie. Los títulos de tarjeta del
+  original salen en negrita y no como encabezados, para que un documento hecho con tarjetas no quede "todo títulos".

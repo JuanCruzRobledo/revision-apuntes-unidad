@@ -33,6 +33,8 @@ def texto_md(md, con_alt=True):
     md = re.sub(r"(?<!!)\[([^\]]*)\]\(([^)]*)\)", r" \1 ", md)  # enlaces: cuenta el texto, no el destino
     md = re.sub(r"^---\s*\n.*?\n---\s*\n", " ", md, count=1, flags=re.S)  # encabezado de datos
     md = re.sub(r"^\s*```\w*\s*$", " ", md, flags=re.M)  # vallas de código (y su lenguaje)
+    md = re.sub(r"</?(figure|figcaption)[^>]*>", " ", md)
+    md = re.sub(r"\{:[^}]*\}", " ", md)  # atributos de imagen
     md = re.sub(r"!\[([^\]]*)\]\([^)]*\)",
                 lambda m: f" {m.group(1)} " if (con_alt and m.group(1) != "Figura") else " ", md)
     md = re.sub(r"^\s*!!!\s+\w+(\s+\"[^\"]*\")?", " ", md, flags=re.M)

@@ -255,17 +255,48 @@ def convertir(pdf, salida, con_encabezado_pagina=False):
             items.append(("txt", r, {"rect": None, "fill": None, "lineas": ls}))
         for i, f in enumerate(figs):
             items.append(("fig", f, {"idx": i}))
+        # Una figura con un título y un texto justo debajo, en la misma columna, forma una figura con pie
+        usados = set()
+        for fi, it in enumerate(list(items)):
+            if it[0] != "fig" or it[1].width > 0.5 * (page.rect.width - 76):  # solo ilustraciones chicas; un diagrama ancho no lleva pie
+                continue
+            cands = []
+            for tj, t in enumerate(items):
+                if t[0] != "txt" or tj in usados:
+                    continue
+                ancho = min(it[1].x1, t[1].x1) - max(it[1].x0, t[1].x0)
+                gap = t[1].y0 - it[1].y1
+                if -2 <= gap <= 45 and ancho > 0.5 * min(it[1].width, t[1].width):
+                    cands.append((gap, tj))
+            if cands:
+                tj = min(cands)[1]
+                usados.add(tj)
+                items[fi] = ("figcap", it[1] | items[tj][1], {"fig": it, "txt": items[tj]})
+        items = [t for k, t in enumerate(items) if k not in usados]
         orden = xy_cut(items, lambda it: it[1])
 
         md.append(f"<!-- Página {pn} -->" if con_encabezado_pagina else "")
+        ancho_util = page.rect.width - 2 * 38  # márgenes del original (≈ ancho del texto)
+
+        def figura_md(rect, b):
+            nonlocal figuras
+            figuras += 1; stats["figuras"] += 1
+            nombre = f"p{pn:02d}_fig{figuras:02d}.png"
+            page.get_pixmap(dpi=200, clip=rect + (-4, -4, 4, 4)).save(salida / "img" / nombre)
+            alt = " / ".join(figura_txt[b["idx"]])[:1000].replace("[", "(").replace("]", ")")
+            pct = max(15, min(100, round(rect.width / ancho_util * 100)))  # conserva la proporción del original
+            return (f'![{alt or "Figura"}](img/{nombre}){{: style="width: {pct}%" }}\n'
+                    f"<!-- REVISAR: figura recortada de la página {pn}; su texto interno no se audita por texto, lo mira el tutor. -->")
+
         for tipo, rect, b in orden:
             if tipo == "fig":
-                figuras += 1; stats["figuras"] += 1
-                nombre = f"p{pn:02d}_fig{figuras:02d}.png"
-                page.get_pixmap(dpi=200, clip=rect + (-4, -4, 4, 4)).save(salida / "img" / nombre)
-                alt = " / ".join(figura_txt[b["idx"]])[:1000].replace("[", "(").replace("]", ")")
-                md.append(f"![{alt or 'Figura'}](img/{nombre})\n"
-                          f"<!-- REVISAR: figura recortada de la página {pn}; su texto interno no se audita por texto, lo mira el tutor. -->")
+                md.append(figura_md(rect, b))
+                continue
+            if tipo == "figcap":
+                f_it, t_it = b["fig"], b["txt"]
+                pie = bloque_a_md(t_it[2], page, cuerpo, tamanos_titulo, fuente_cuerpo, stats, avisos, pn, primer_titulo)
+                md.append('<figure markdown="1">\n' + figura_md(f_it[1], f_it[2]) + '\n<figcaption markdown="1">\n'
+                          + pie + "\n</figcaption>\n</figure>")
                 continue
             md.append(bloque_a_md(b, page, cuerpo, tamanos_titulo, fuente_cuerpo, stats, avisos, pn, primer_titulo))
             if any(l.size in tamanos_titulo for l in b["lineas"]):
@@ -355,7 +386,8 @@ def parrafos(lineas, page, cuerpo, titulos, primer_titulo, dentro_de_cuadro=Fals
             prev = l; continue
         # título de tarjeta: fuente de títulos (slab) de tamaño intermedio
         if "slab" in l.font.lower() and l.size > cuerpo * 0.75:
-            cerrar(); out.append(("**" + t + "**") if dentro_de_cuadro else ("#### " + t)); prev = l; continue
+            cerrar()
+            out.append(f"**{t}**" + ("" if re.fullmatch(r"\d{1,2}", t) else "  ")); prev = l; continue
         # viñeta: pequeño cuadrado/círculo relleno a la izquierda de la línea
         marca = any(d.get("fill") and fitz.Rect(d["rect"]).width < 9 and fitz.Rect(d["rect"]).height < 9
                     and l.bbox.x0 - 32 < d["rect"].x1 <= l.bbox.x0 - 2 and abs((d["rect"].y0 + d["rect"].y1) / 2 - (l.bbox.y0 + l.bbox.y1) / 2) < l.size
