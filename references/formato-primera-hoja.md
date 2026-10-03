@@ -21,9 +21,10 @@ Cabecera (logo UTN y nombre de la carrera) en todas las hojas; pie con `Materia`
 - **TP** (`tipo: tp`): Objetivos, Consignas (cada `###` es un ejercicio numerado, con `[N puntos]` al final del título),
   Criterios de evaluación y Formato de entrega. **El TP no lleva bibliografía.**
 
-**Bibliografía (solo teoría)**: obligatoria, al final, como lista numerada en APA 7 (con capítulos si corresponde). **Nunca se
-inventa**: se verifica cada referencia con búsqueda web. Si no se puede verificar, **el documento no se genera** hasta resolverlo
-(`generar.py` se detiene). Más adelante se definirá de dónde se extrae; mientras tanto la resuelve el tutor.
+**Bibliografía (solo teoría)**: obligatoria, al final, como lista numerada. **Sale de fuentes reales: la sección 0 del aula de la
+materia**, bloque "Qué necesitás para estudiar" (cómo leerla, formato del archivo y preguntas abiertas en
+`references/bibliografia-aula.md`; **esa parte está sin verificar contra el aula real**). Nunca se busca en la web ni se inventa. Si
+no se pudo leer, no hay bibliografía o el tutor no la confirmó, **el documento no se genera** (`generar.py` se detiene).
 
 **Contenido vs. estilo**: el contenido del tema se respeta SÍ o SÍ (no se quita ni se resume nada; solo se corrigen los errores
 que detecta la auditoría). Lo que se unifica es el estilo y la estructura. La portada original del documento (título, materia,

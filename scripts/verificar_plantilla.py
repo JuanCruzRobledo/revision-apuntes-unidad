@@ -44,7 +44,7 @@ def main():
     cuerpo = md[m.end():]
     tiene_biblio = re.search(r"^## Bibliograf", cuerpo, re.M | re.I) is not None
     if tipo == "apunte" and not tiene_biblio:
-        fallas.append("el apunte no tiene '## Bibliografía' (obligatoria; si no se puede verificar, el documento NO se genera)")
+        fallas.append("el apunte no tiene '## Bibliografía' (obligatoria; sale de la sección 0 del aula)")
     if tipo == "tp" and tiene_biblio:
         fallas.append("el TP no lleva bibliografía")
     if re.search(r"\{\{[A-Z_]+\}\}|Nombre Apellido|Título del", md):

@@ -44,7 +44,8 @@ automática no reemplaza que una persona mire cada archivo. Por eso:
 
 ## Qué NO hace
 - No sube, edita ni borra nada en el aula (el campus es **solo lectura**).
-- No inventa bibliografía, capítulos, años, ediciones ni versiones: si no lo puede verificar, lo omite o lo avisa.
+- No inventa bibliografía, capítulos, años, ediciones ni versiones: si no lo puede verificar, lo omite o lo avisa. En los apuntes
+  teóricos la bibliografía **solo** sale de la sección 0 del aula (`references/bibliografia-aula.md`); nunca de la web.
 - No modifica los originales: siempre trabaja sobre copias.
 - No aplica la plantilla a presentaciones (Gamma o no): solo a documentos de teoría y TP que el tutor confirma.
 
@@ -84,7 +85,8 @@ markdown o texto. El flujo es el mismo; lo que cambia es la herramienta:
    de la plantilla los revisa el tutor contra el original**: los scripts no garantizan que no se haya roto nada.
 2. Pedí estos datos (si el usuario ya los dio, no los repitas): materia y cursada; unidad (número y nombre); link a la
    sección del campus; carpeta con los documentos; carpeta con guiones/presentaciones/videos; carpeta con el código de
-   ejemplo (si la materia tiene); nombre del **revisor de la unidad** (va en la portada); fuentes para la bibliografía;
+   ejemplo (si la materia tiene); nombre del **revisor de la unidad** (va en la portada); la **URL del aula con el ID del curso**
+   (de ahí se lee la sección 0 con la bibliografía de los apuntes); fuentes de bibliografía del material que no pasa por la plantilla;
    reglas técnicas de la materia (por ejemplo, versiones, namespaces o convenciones obligatorias; pueden no existir);
    carpeta de trabajo.
    **Estilo de redacción**: proponé el estilo por defecto (tercera persona e impersonal con "se", presente atemporal) y
@@ -113,6 +115,10 @@ sufijo "(1)", numeración inconsistente, actividades sin carpeta. **Frená y esp
 `python scripts/clasificar_documento.py <archivos>` para sugerirlo (PDF apaisado, link a gamma.app y poco texto = presentación;
 A4 vertical con texto corrido = documento) y que el tutor lo **confirme archivo por archivo**. Los que sean `apunte` o `tp` van por
 la plantilla; los demás siguen el flujo de siempre. Un TP no lleva bibliografía; un apunte sí.
+**Bibliografía de los apuntes (sin verificar con el aula real)**: si hay `apunte`, leé la **sección 0** del aula (bloque "Qué necesitás
+para estudiar") con la skill del campus o Claude in Chrome y guardala **textual** en `<trabajo>/fuentes/bibliografia.md` (formato en
+`references/bibliografia-aula.md`). Mostrásela al tutor con el inventario y esperá su OK. **Hace falta acceso al aula**: sin él, o
+sin bibliografía en la sección 0, esos apuntes quedan **bloqueados por bibliografía** y no se generan.
 
 ### Fase 2 — Fuente de verdad de lo visto
 Prioridad: (1) transcripciones reales de los videos, (2) guiones, (3) descripción de la actividad en el aula. A grandes
@@ -140,8 +146,8 @@ Un par detector/corrector por actividad, en paralelo, cada uno escribiendo solo 
    y los mira el tutor. El `.base.md` no se modifica más.
 2. El **detector** audita el Markdown base (modo plantilla de `prompt-detector.md`) y escribe el informe de siempre.
 3. El **corrector** aplica el informe sobre una copia (`.final.md`), completa el encabezado de datos, regenera el PDF con
-   `assets/plantilla/generar.py` y verifica (modo plantilla de `prompt-corrector.md`). Si la bibliografía de un apunte no es
-   verificable, **el PDF no se genera** hasta resolverla. Las dudas que dejen:
+   `assets/plantilla/generar.py` y verifica (modo plantilla de `prompt-corrector.md`). La bibliografía del apunte se copia de
+   `fuentes/bibliografia.md` (la del aula); si falta o no está confirmada, **el PDF no se genera** hasta resolverla. Las dudas que dejen:
 resolvelas con la información disponible (aula, código, guiones) y preguntale al tutor solo lo imposible de resolver.
 Si un subagente se corta, retomalo con `SendMessage` y revisá qué alcanzó a escribir antes de rehacer.
 
@@ -198,6 +204,7 @@ Numeración por actividad y sin sufijos "(1)" ni "(2)". Los duplicados se borran
 |---|---|
 | `references/flujo-detallado.md` | Antes de la Fase 1 y 2 (cómo recorrer el aula, límites del navegador) |
 | `references/criterios-redaccion.md` | Al armar CRITERIOS.md y al verificar |
+| `references/bibliografia-aula.md` | Fase 0 y 1, si hay apuntes: cómo leer la bibliografía de la sección 0 (sin verificar) |
 | `references/formato-primera-hoja.md` | Al corregir o crear un documento (plantilla de teoría y TP, y portada del resto) |
 | `references/subagentes.md` | Antes de lanzar detector/corrector |
 | `references/gamma-pdf.md` | Solo si hay PDF de Gamma |

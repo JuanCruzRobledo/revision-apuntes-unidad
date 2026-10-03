@@ -77,7 +77,7 @@ def leer_md(ruta: Path):
     cuerpo = re.sub(r"\A((?:\s*<!--.*?-->)*)\s*# [^\n]*\n", r"\1\n", cuerpo, flags=re.S)
     tiene_biblio = re.search(r"^## Bibliograf", cuerpo, re.M | re.I) is not None
     if tipo == "apunte" and not tiene_biblio:
-        sys.exit(f"{ruta.name}: un apunte debe terminar con la sección '## Bibliografía' (obligatoria; si no se puede verificar, avisar).")
+        sys.exit(f"{ruta.name}: un apunte debe terminar con la sección '## Bibliografía' (obligatoria; sale de la sección 0 del aula: ver references/bibliografia-aula.md).")
     if tipo == "tp" and tiene_biblio:
         sys.exit(f"{ruta.name}: el TP no lleva bibliografía.")
     return tipo, datos, cuerpo

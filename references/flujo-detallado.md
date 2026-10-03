@@ -17,6 +17,11 @@ Preferí la skill `tup-campus-navigator`. Si no está disponible, Claude in Chro
 - Para ver adjuntos de práctica/resolución, el nombre aparece en la página de la tarea o en la redirección del recurso.
   No descargues: alcanza con el nombre.
 
+### Sección 0 (bibliografía de los apuntes)
+Si hay apuntes para la plantilla, además de la unidad leé la **sección 0** del curso (presentación de la materia): bloque
+"Qué necesitás para estudiar". Procedimiento, formato del archivo y puntos a confirmar: `references/bibliografia-aula.md`
+(**sin verificar contra el aula real**). Es solo lectura, igual que el resto.
+
 ### Qué buscar en cada actividad
 Carpeta de apuntes (archivos), cuestionario, práctica (PDF) y resolución (ZIP), videos con duración, infografías,
 adjuntos de código. Un apunte puede estar **embebido en un label** (ruta `mod_label/intro/`) y no en una carpeta: es un

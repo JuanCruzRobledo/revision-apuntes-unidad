@@ -31,7 +31,8 @@ de IA**, errores temáticos y técnicos (contra el código real del curso, si la
 (`assets/plantilla/`: Markdown -> HTML -> PDF con Chrome o Edge) para que todas las materias y unidades salgan iguales en estilo
 y estructura. El flujo no cambia: se convierte el documento a Markdown, el detector audita ese Markdown, el corrector aplica el
 informe sobre él y se regenera el PDF. Primera hoja: materia, unidad, etiqueta (Apunte teórico / Trabajo práctico), título y
-revisor. El apunte termina en una bibliografía APA 7 real (si no se puede verificar, el PDF no se genera); el TP no lleva
+revisor. El apunte termina en una bibliografía tomada de la **sección 0 del aula** (si no se puede leer o no está confirmada, el PDF no se genera; esa lectura está
+pendiente de verificar con el aula real); el TP no lleva
 bibliografía. El contenido del tema nunca se quita ni se resume: `verificar_fidelidad.py` lo comprueba.
 
 **Qué no hace**: no sube nada al aula, no inventa bibliografía ni versiones y no modifica los originales. **Las presentaciones
@@ -61,6 +62,7 @@ La skill queda disponible para tu agente y se carga sola cuando pedís revisar, 
 |---|---|---|
 | **Una vía para leer el aula** (solo lectura) | Inventario del aula | Skill `tup-campus-navigator` (solo campus TUP): `git clone https://github.com/Group-Active-IA/Skill-Moodle.git ~/.claude/skills/tup-campus-navigator` y `bash ~/.claude/skills/tup-campus-navigator/install.sh` (en Windows, desde Git Bash); requiere acceso al repo. **O** Claude in Chrome con tu sesión del campus abierta (sirve para cualquier campus) |
 | Python 3.10+, PyMuPDF, python-docx, Pillow | Extraer, verificar y editar documentos y PDF | `pip install -r requirements.txt` |
+| Acceso al aula (skill del campus o Claude in Chrome) | **Con apuntes teóricos es necesario**: la bibliografía se lee de la sección 0 del aula (bloque "Qué necesitás para estudiar"). Esa parte está **sin verificar con el aula real** (`references/bibliografia-aula.md`) | Ver la fila de arriba |
 | `markdown`, `pygments` y **Chrome o Edge** | Generar con la plantilla el PDF de teoría y TP (Windows, macOS y Linux) | `pip install -r requirements.txt` + navegador. `preflight.py --con-plantilla` lo verifica |
 | Microsoft Word o LibreOffice | Revisar el layout de los `.docx` (exportar a PDF) | Recomendado. Sin esto, la revisión visual del Word queda 100 % a cargo del tutor |
 | youtube-transcript-api | Transcripciones de videos | Opcional (incluida en `requirements.txt`). Si YouTube bloquea, se trabaja con los guiones |

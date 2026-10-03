@@ -70,7 +70,8 @@ def main():
             "git clone https://github.com/Group-Active-IA/Skill-Moodle.git ~/.claude/skills/tup-campus-navigator\n"
             "      bash ~/.claude/skills/tup-campus-navigator/install.sh   (en Windows, desde Git Bash)\n"
             "      Si no tenés acceso al repo, o tu campus es otro: usá Claude in Chrome con tu sesión del campus abierta.\n"
-            "      Hace falta UNA de las dos vías para leer el aula.")
+            "      Hace falta UNA de las dos vías para leer el aula. Con teoría (apuntes) es NECESARIO: la bibliografía se lee de la\n"
+            "      sección 0 del aula; sin acceso, esos apuntes quedan bloqueados por bibliografía.")
     lo = word_o_libreoffice()
     chequeo(OPC, lo is not None, "Microsoft Word o LibreOffice (revisar el layout de los .docx)",
             "Instalar LibreOffice (libreoffice.org). Sin esto la revisión visual del Word queda 100% a cargo del tutor.", lo or "")
