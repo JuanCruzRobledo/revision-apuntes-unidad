@@ -22,8 +22,9 @@ Cabecera (logo UTN y nombre de la carrera) en todas las hojas; pie con `Materia`
   Criterios de evaluación y Formato de entrega. **El TP no lleva bibliografía.**
 
 **Bibliografía (solo teoría)**: obligatoria, al final, como lista numerada. **Sale de fuentes reales: la sección 0 del aula de la
-materia**, bloque "Qué necesitás para estudiar" (cómo leerla, formato del archivo y preguntas abiertas en
-`references/bibliografia-aula.md`; **esa parte está sin verificar contra el aula real**). Nunca se busca en la web ni se inventa. Si
+materia**, label "¿Qué necesitás para estudiar?" (cómo leerla, formato del archivo y decisiones pendientes en
+`references/bibliografia-aula.md`). **El aula no trae un formato único** (Prog II en APA 7, Prog III con otro formato, Prog I con
+prefijos): se transcribe tal cual, sin emojis, hasta que el tutor decida si se unifica a APA 7. Nunca se busca en la web ni se inventa. Si
 no se pudo leer, no hay bibliografía o el tutor no la confirmó, **el documento no se genera** (`generar.py` se detiene).
 
 **Contenido vs. estilo**: el contenido del tema se respeta SÍ o SÍ (no se quita ni se resume nada; solo se corrigen los errores

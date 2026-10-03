@@ -20,7 +20,8 @@ Preferí la skill `tup-campus-navigator`. Si no está disponible, Claude in Chro
 ### Sección 0 (bibliografía de los apuntes)
 Si hay apuntes para la plantilla, además de la unidad leé la **sección 0** del curso (presentación de la materia): bloque
 "Qué necesitás para estudiar". Procedimiento, formato del archivo y puntos a confirmar: `references/bibliografia-aula.md`
-(**sin verificar contra el aula real**). Es solo lectura, igual que el resto.
+(verificado en Prog I, II y III). Es solo lectura, igual que el resto. El label está **plegado** ("Mostrar más"): hay que leer el DOM,
+no la pantalla.
 
 ### Qué buscar en cada actividad
 Carpeta de apuntes (archivos), cuestionario, práctica (PDF) y resolución (ZIP), videos con duración, infografías,

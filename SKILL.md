@@ -115,9 +115,10 @@ sufijo "(1)", numeración inconsistente, actividades sin carpeta. **Frená y esp
 `python scripts/clasificar_documento.py <archivos>` para sugerirlo (PDF apaisado, link a gamma.app y poco texto = presentación;
 A4 vertical con texto corrido = documento) y que el tutor lo **confirme archivo por archivo**. Los que sean `apunte` o `tp` van por
 la plantilla; los demás siguen el flujo de siempre. Un TP no lleva bibliografía; un apunte sí.
-**Bibliografía de los apuntes (sin verificar con el aula real)**: si hay `apunte`, leé la **sección 0** del aula (bloque "Qué necesitás
-para estudiar") con la skill del campus o Claude in Chrome y guardala **textual** en `<trabajo>/fuentes/bibliografia.md` (formato en
-`references/bibliografia-aula.md`). Mostrásela al tutor con el inventario y esperá su OK. **Hace falta acceso al aula**: sin él, o
+**Bibliografía de los apuntes (verificada parcialmente con el aula real)**: si hay `apunte`, leé la **sección 0** del aula (label
+"¿Qué necesitás para estudiar?", ubicado por texto) con la skill del campus o Claude in Chrome y guardala **textual**, sin emojis
+decorativos, en `<trabajo>/fuentes/bibliografia.md` (formato, script y decisiones pendientes en `references/bibliografia-aula.md`;
+el formato **no es uniforme** entre materias y hay líneas que no son referencias). Mostrásela al tutor con el inventario y esperá su OK. **Hace falta acceso al aula**: sin él, o
 sin bibliografía en la sección 0, esos apuntes quedan **bloqueados por bibliografía** y no se generan.
 
 ### Fase 2 — Fuente de verdad de lo visto
@@ -204,7 +205,7 @@ Numeración por actividad y sin sufijos "(1)" ni "(2)". Los duplicados se borran
 |---|---|
 | `references/flujo-detallado.md` | Antes de la Fase 1 y 2 (cómo recorrer el aula, límites del navegador) |
 | `references/criterios-redaccion.md` | Al armar CRITERIOS.md y al verificar |
-| `references/bibliografia-aula.md` | Fase 0 y 1, si hay apuntes: cómo leer la bibliografía de la sección 0 (sin verificar) |
+| `references/bibliografia-aula.md` | Fase 0 y 1, si hay apuntes: cómo leer la bibliografía de la sección 0 (verificada parcialmente) |
 | `references/formato-primera-hoja.md` | Al corregir o crear un documento (plantilla de teoría y TP, y portada del resto) |
 | `references/subagentes.md` | Antes de lanzar detector/corrector |
 | `references/gamma-pdf.md` | Solo si hay PDF de Gamma |

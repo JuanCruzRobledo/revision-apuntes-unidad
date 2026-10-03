@@ -48,7 +48,8 @@ Trabajá en {{TRABAJO}}/plantilla/Actividad_{{N}}/ y NO toques el original ni el
    registralo en el informe de cambios. El título grande no se repite: si el Markdown empieza con `# Título`, es el título general.
 4. Estructura del tipo: apunte -> `## Bibliografía` al final, como lista numerada, con las referencias de
    `{{TRABAJO}}/fuentes/bibliografia.md` (tomadas de la sección 0 del aula; ver `references/bibliografia-aula.md`), copiadas
-   TEXTUALMENTE: no busques en la web, no agregues ni completes nada, no inventes autores, años, ediciones ni capítulos. Si ese
+   TEXTUALMENTE (solo la sección "Referencias" de ese archivo, sin emojis decorativos; el formato del aula no se reescribe a APA 7 salvo
+   que CRITERIOS.md lo indique): no busques en la web, no agregues ni completes nada, no inventes autores, años, ediciones ni capítulos. Si ese
    archivo no existe, está vacío o no está confirmado por el tutor, NO generes el PDF: dejalo en "bloqueado por bibliografía" y avisá.
    Si el archivo no dice qué referencias corresponden a este tema, poné la lista completa y marcala con `<!-- REVISAR -->`. tp -> sin bibliografía; Objetivos, Consignas (`###` por ejercicio, `[N puntos]`), Criterios, Formato de entrega.
 5. Resolvé cada marca `<!-- REVISAR -->` que puedas (lenguaje del bloque de código, líneas partidas) y borrala; las figuras se dejan
