@@ -209,6 +209,11 @@ def convertir(pdf, salida, con_encabezado_pagina=False):
                 if ln.bbox.y0 > page.rect.height - 60 and re.fullmatch(r"\d{1,3}", ln.texto.strip()):
                     continue
                 lineas.append(ln)
+        pesos_p = {}
+        for ln in lineas:
+            pesos_p[ln.size] = pesos_p.get(ln.size, 0) + len(ln.texto)
+        cuerpo_p = max(pesos_p, key=pesos_p.get) if pesos_p else cuerpo
+        titulos_p = sorted({sz for sz in pesos_p if sz > cuerpo_p * 1.15}, reverse=True)
         if fuente_cuerpo is None and lineas:
             fuente_cuerpo = max(((l.font, len(l.texto)) for l in lineas if abs(l.size - cuerpo) < 0.6),
                                 key=lambda x: x[1], default=(None, 0))[0]
@@ -294,12 +299,12 @@ def convertir(pdf, salida, con_encabezado_pagina=False):
                 continue
             if tipo == "figcap":
                 f_it, t_it = b["fig"], b["txt"]
-                pie = bloque_a_md(t_it[2], page, cuerpo, tamanos_titulo, fuente_cuerpo, stats, avisos, pn, primer_titulo)
+                pie = bloque_a_md(t_it[2], page, cuerpo_p, titulos_p, fuente_cuerpo, stats, avisos, pn, primer_titulo)
                 md.append('<figure markdown="1">\n' + figura_md(f_it[1], f_it[2]) + '\n<figcaption markdown="1">\n'
                           + pie + "\n</figcaption>\n</figure>")
                 continue
-            md.append(bloque_a_md(b, page, cuerpo, tamanos_titulo, fuente_cuerpo, stats, avisos, pn, primer_titulo))
-            if any(l.size in tamanos_titulo for l in b["lineas"]):
+            md.append(bloque_a_md(b, page, cuerpo_p, titulos_p, fuente_cuerpo, stats, avisos, pn, primer_titulo))
+            if any(l.size in titulos_p for l in b["lineas"]):
                 primer_titulo = False
     texto = "\n\n".join(x for x in md if x.strip()) + "\n"
     texto = re.sub(r"\n{3,}", "\n\n", texto)
@@ -364,7 +369,9 @@ def bloque_a_md(b, page, cuerpo, titulos, fuente_cuerpo, stats, avisos, pn, prim
 
 
 def parrafos(lineas, page, cuerpo, titulos, primer_titulo, dentro_de_cuadro=False):
-    clases = clases_de_titulo(titulos)
+    conteo = {}
+    for x in lineas:
+        conteo[x.size] = conteo.get(x.size, 0) + 1
     out, actual, prev = [], [], None
 
     def cerrar():
@@ -376,9 +383,9 @@ def parrafos(lineas, page, cuerpo, titulos, primer_titulo, dentro_de_cuadro=Fals
         if not t:
             continue
         # título
-        if l.size in titulos and not dentro_de_cuadro:
+        if l.size in titulos and not dentro_de_cuadro and len(t) <= 110 and conteo[l.size] <= 3:
             cerrar()
-            nivel = 2 if clases[l.size] == 0 else 3
+            nivel = 2 if l.size >= cuerpo * 1.7 else 3
             if prev is not None and prev.size == l.size and out and out[-1].startswith("#" * nivel + " "):
                 out[-1] += " " + t  # título partido en varias líneas
             else:

@@ -62,6 +62,11 @@ Leelas ante cualquier tropiezo. Cada una costó tiempo la primera vez.
     el historial de un repo público no alcanza: hay que recrear el repo.
 
 ## Plantilla única (teoría y TP)
+- **Nunca prometas que cualquier documento queda bien.** La plantilla se probó con 4 PDF de Prog2 y 5 Word de Prog3: sin texto
+  perdido, pero con diferencias de estilo según el origen (un PDF de tarjetas queda más "de títulos" que uno de texto corrido). La
+  revisión visual contra el original es del tutor.
+- **El tamaño de letra cambia por página** en los PDF autoajustados: el cuerpo y los títulos se calculan por página, no globales;
+  con un cuerpo global, una página con letra más grande salía entera como encabezados y el código como párrafo.
 - **El PDF no se convierte con herramientas genéricas.** `markitdown` y similares pierden títulos, código, columnas, cuadros e
   imágenes de un PDF de documento y mezclan columnas. Se usa `pdf_a_md.py` (PyMuPDF) y se comprueba con `verificar_fidelidad.py`.
 - **Un comentario HTML dentro de un bloque de código es contenido** (`<!-- Maven -->` en un pom). Los verificadores solo ignoran

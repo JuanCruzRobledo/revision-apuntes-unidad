@@ -5,6 +5,8 @@ Skill para revisar y corregir el **material de apuntes de una unidad** de una ma
 y una **revisión manual obligatoria** del tutor antes de subir.
 
 > Ningún archivo está listo para subir hasta que el tutor lo revise a mano y lo confirme, uno por uno.
+> En teoría y TP, esa revisión incluye **el estilo y el contenido del PDF de la plantilla frente al original**: la conversión es
+> automática y puede romper estilos o perder una página, una figura o un bloque de código. Los scripts solo detectan texto faltante.
 
 ---
 

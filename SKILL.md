@@ -31,6 +31,12 @@ visual parcial y los errores dentro de imágenes (diagramas, ilustraciones) no s
 automática no reemplaza que una persona mire cada archivo. Por eso:
 
 - Nunca digas "listo para subir". Decí "corregido, pendiente de tu revisión".
+- **Teoría y TP (plantilla): el estilo también se revisa a mano, sí o sí.** La conversión a Markdown y la plantilla son
+  automáticas y no hay garantía de que cualquier documento quede bien: pueden romperse estilos (títulos, cajas, tablas, código
+  partido, figuras demasiado grandes o mal ubicadas), perderse una página, una sección, una figura o un bloque de código, o quedar
+  algo "raro". `verificar_fidelidad.py` y `verificar_plantilla.py` detectan faltantes de **texto**, no problemas visuales ni
+  errores dentro de imágenes. El tutor compara el PDF contra el original, **página por página**, y decide si queda bien. Si algo
+  no convence, se corrige el Markdown o se deja ese documento fuera de la plantilla; nunca se da por bueno por los scripts.
 - La compuerta es técnica: `scripts/compuerta_revision.py` se **niega** a generar `ORDEN_DE_SUBIDA.md` si falta la
   confirmación de algún archivo, y invalida una confirmación si el archivo cambia después.
 - Solo ejecutás `confirmar` cuando el tutor dijo **explícitamente en el chat** que revisó ese archivo. Jamás marques una
@@ -74,7 +80,8 @@ markdown o texto. El flujo es el mismo; lo que cambia es la herramienta:
 ## Flujo (fases)
 
 ### Fase 0 — Aviso y datos
-1. Avisá la regla de revisión manual (arriba).
+1. Avisá la regla de revisión manual (arriba). Si hay teoría o TP, avisá también que **el estilo, las páginas y el contenido del PDF
+   de la plantilla los revisa el tutor contra el original**: los scripts no garantizan que no se haya roto nada.
 2. Pedí estos datos (si el usuario ya los dio, no los repitas): materia y cursada; unidad (número y nombre); link a la
    sección del campus; carpeta con los documentos; carpeta con guiones/presentaciones/videos; carpeta con el código de
    ejemplo (si la materia tiene); nombre del **revisor de la unidad** (va en la portada); fuentes para la bibliografía;
@@ -157,6 +164,9 @@ etiqueta, pie, cajas, código, tablas, figuras). El PDF de la plantilla es el en
 4. `compuerta_revision.py orden --trabajo <trabajo>` genera `ORDEN_DE_SUBIDA.md` **solo si todo está confirmado**. Si el
    tutor intenta saltearse la revisión, explicale por qué no se puede.
 5. Cerrá repitiendo el aviso: la subida al aula la hace el tutor, y registrá en el resumen final qué confirmó.
+   Para cada PDF de la plantilla recordale al tutor qué mirar: estilos (primera hoja, títulos, cajas, tablas, código), que no falte
+   ninguna página, sección, figura ni bloque de código frente al original, y que no se vea raro. Si encuentra algo, se corrige el
+   Markdown, se regenera y se vuelve a confirmar (el hash invalida la confirmación anterior).
 
 ## Subagentes (dos roles por actividad)
 - **Detector**: solo lectura. Lee el documento **completo**, contrasta con videos/guiones/código real y escribe el informe
