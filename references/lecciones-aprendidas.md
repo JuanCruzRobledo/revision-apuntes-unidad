@@ -82,3 +82,9 @@ Leelas ante cualquier tropiezo. Cada una costó tiempo la primera vez.
 - **Ilustraciones con pie**: una imagen chica con un título y un texto justo debajo (misma columna) sale como figura con pie
   (`<figure>` + `<figcaption>`) y al ancho proporcional del original; un diagrama ancho no lleva pie. Los títulos de tarjeta del
   original salen en negrita y no como encabezados, para que un documento hecho con tarjetas no quede "todo títulos".
+- **La bibliografía no se guarda en la skill**: cada persona la lee de su aula, porque el aula cambia de un año a otro. Se ubica el
+  bloque **por contenido** ("NECESITÁS PARA ESTUDIAR" / "BIBLIOGRAF*"), no por posición (era la 4.ª o la 5.ª actividad según la materia).
+- **El bloque de bibliografía está plegado** ("Mostrar más"): leer el DOM, no la pantalla ni `get_page_text`.
+- **El formato del aula no es uniforme** (APA 7, `Título — Autor (Editorial, Año)` con emoji, prefijo `Libro:`) y puede traer erratas y
+  líneas que no son referencias: por eso se convierte a APA 7 con `verificar_bibliografia.py` (que detecta datos inventados) y lo confirma
+  el tutor.

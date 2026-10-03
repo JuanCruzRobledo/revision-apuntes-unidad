@@ -46,12 +46,15 @@ Trabajá en {{TRABAJO}}/plantilla/Actividad_{{N}}/ y NO toques el original ni el
    Los datos salen de CRITERIOS.md / Fase 0. No hay autor ni año.
 3. Portada original: reemplazala por la primera hoja de la plantilla (que ya trae materia, unidad, etiqueta, título y revisor) y
    registralo en el informe de cambios. El título grande no se repite: si el Markdown empieza con `# Título`, es el título general.
-4. Estructura del tipo: apunte -> `## Bibliografía` al final, como lista numerada, con las referencias de
-   `{{TRABAJO}}/fuentes/bibliografia.md` (tomadas de la sección 0 del aula; ver `references/bibliografia-aula.md`), copiadas
-   TEXTUALMENTE (solo la sección "Referencias" de ese archivo, sin emojis decorativos; el formato del aula no se reescribe a APA 7 salvo
-   que CRITERIOS.md lo indique): no busques en la web, no agregues ni completes nada, no inventes autores, años, ediciones ni capítulos. Si ese
-   archivo no existe, está vacío o no está confirmado por el tutor, NO generes el PDF: dejalo en "bloqueado por bibliografía" y avisá.
-   Si el archivo no dice qué referencias corresponden a este tema, poné la lista completa y marcala con `<!-- REVISAR -->`. tp -> sin bibliografía; Objetivos, Consignas (`###` por ejercicio, `[N puntos]`), Criterios, Formato de entrega.
+4. Estructura del tipo.
+   - **apunte**: `## Bibliografía` al final, como lista numerada, con referencias de la lista **"Referencias (APA 7)"** de
+     `{{TRABAJO}}/fuentes/bibliografia.md` (leída del aula y convertida a APA 7 una sola vez por materia y confirmada por el tutor; ver
+     `references/bibliografia-aula.md`). ELEGÍ las que correspondan al TEMA de este apunte y anotá en el informe de cambios por qué cada
+     una; si no podés decidir con criterio, poné la lista general de la materia. En ambos casos marcá la sección con
+     `<!-- REVISAR: selección de referencias -->`. Copialas TEXTUALMENTE de esa lista: no busques en la web, no agregues, completes ni
+     reformatees nada, no inventes autores, años, ediciones ni capítulos. Si el archivo no existe, no está confirmado por el tutor o la
+     referencia es `[INCOMPLETA ...]`, NO generes el PDF: dejalo en "bloqueado por bibliografía" y avisá.
+   - **tp**: sin bibliografía; Objetivos, Consignas (`###` por ejercicio, `[N puntos]`), Criterios de evaluación, Formato de entrega.
 5. Resolvé cada marca `<!-- REVISAR -->` que puedas (lenguaje del bloque de código, líneas partidas) y borrala; las figuras se dejan
    con su marca: las mira el tutor.
 6. Generá el PDF: `python assets/plantilla/generar.py {{ID}}.final.md --out {{TRABAJO}}/corregidos/Actividad_{{N}} --preview`
@@ -59,7 +62,8 @@ Trabajá en {{TRABAJO}}/plantilla/Actividad_{{N}}/ y NO toques el original ni el
 7. Verificación (todas, y mirá TODAS las páginas del PDF; si no podés verlas, decilo):
    - `python scripts/verificar_fidelidad.py cambios {{ID}}.base.md {{ID}}.final.md` -> cada diferencia debe estar en tu registro de cambios.
    - `python scripts/verificar_fidelidad.py pdf {{ID}}.final.md <pdf>` -> sin diferencias y con todas las figuras.
-   - `python scripts/verificar_plantilla.py {{ID}}.final.md <pdf>` (con `--sin-persona` si CRITERIOS.md fija otro estilo).
+   - `python scripts/verificar_plantilla.py {{ID}}.final.md <pdf> --bibliografia {{TRABAJO}}/fuentes/bibliografia.md` (con `--sin-persona`
+     si CRITERIOS.md fija otro estilo): comprueba también que cada referencia del apunte esté en la lista APA 7 de la materia.
 ENTREGABLES: el PDF en corregidos/Actividad_{{N}}/, {{ID}}.final.md en plantilla/Actividad_{{N}}/ y el informe de cambios habitual
 (+ salida de las tres verificaciones). Nunca "listo para subir": queda pendiente de la revisión manual del tutor.
 ```

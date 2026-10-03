@@ -45,7 +45,7 @@ automática no reemplaza que una persona mire cada archivo. Por eso:
 ## Qué NO hace
 - No sube, edita ni borra nada en el aula (el campus es **solo lectura**).
 - No inventa bibliografía, capítulos, años, ediciones ni versiones: si no lo puede verificar, lo omite o lo avisa. En los apuntes
-  teóricos la bibliografía **solo** sale de la sección 0 del aula (`references/bibliografia-aula.md`); nunca de la web.
+  teóricos la bibliografía **solo** sale de la sección 0 del aula, convertida a APA 7 sin agregar datos (`references/bibliografia-aula.md`); nunca de la web.
 - No modifica los originales: siempre trabaja sobre copias.
 - No aplica la plantilla a presentaciones (Gamma o no): solo a documentos de teoría y TP que el tutor confirma.
 
@@ -115,11 +115,16 @@ sufijo "(1)", numeración inconsistente, actividades sin carpeta. **Frená y esp
 `python scripts/clasificar_documento.py <archivos>` para sugerirlo (PDF apaisado, link a gamma.app y poco texto = presentación;
 A4 vertical con texto corrido = documento) y que el tutor lo **confirme archivo por archivo**. Los que sean `apunte` o `tp` van por
 la plantilla; los demás siguen el flujo de siempre. Un TP no lleva bibliografía; un apunte sí.
-**Bibliografía de los apuntes (verificada parcialmente con el aula real)**: si hay `apunte`, leé la **sección 0** del aula (label
-"¿Qué necesitás para estudiar?", ubicado por texto) con la skill del campus o Claude in Chrome y guardala **textual**, sin emojis
-decorativos, en `<trabajo>/fuentes/bibliografia.md` (formato, script y decisiones pendientes en `references/bibliografia-aula.md`;
-el formato **no es uniforme** entre materias y hay líneas que no son referencias). Mostrásela al tutor con el inventario y esperá su OK. **Hace falta acceso al aula**: sin él, o
-sin bibliografía en la sección 0, esos apuntes quedan **bloqueados por bibliografía** y no se generan.
+**Bibliografía de los apuntes**: si hay `apunte`, **cada persona la lee del aula de su materia** (la skill no trae bibliografías
+guardadas, y el aula puede cambiar de un año a otro). Seguí `references/bibliografia-aula.md`: abrí la **sección 0**
+(`...?id=<ID>&section=0`), ubicá el bloque "¿Qué necesitás para estudiar?" / "BIBLIOGRAFÍA" **por su contenido y no por su posición**,
+leelo con `assets/templates/leer_bibliografia_seccion0.js` (por tramos), transcribilo **textual y sin emojis** a
+`<trabajo>/fuentes/bibliografia.md` y **convertilo a APA 7 sin inventar ningún dato** (todas las bibliografías salen en APA 7).
+Corré `python scripts/verificar_bibliografia.py apa <trabajo>/fuentes/bibliografia.md` y mostrale al tutor la tabla
+**original -> APA 7** (con las referencias incompletas y las erratas) junto con el inventario; esperá su OK. **Hace falta acceso al
+aula**: sin él, sin bibliografía en la sección 0 o con referencias incompletas, los apuntes afectados quedan **bloqueados por
+bibliografía** y no se generan. Si no encontrás el bloque, listá los títulos de la sección 0 y preguntale al tutor; nunca la busques
+en la web.
 
 ### Fase 2 — Fuente de verdad de lo visto
 Prioridad: (1) transcripciones reales de los videos, (2) guiones, (3) descripción de la actividad en el aula. A grandes
@@ -139,7 +144,10 @@ Corré el ciclo completo (detector → corrector) en una sola actividad. Verific
 tutor qué se encontró, qué se corrigió y qué dudas quedan. Esperá su OK antes de lanzar el resto.
 
 ### Fase 5 — Resto de actividades en paralelo
-Un par detector/corrector por actividad, en paralelo, cada uno escribiendo solo en su carpeta.
+Un par detector/corrector por actividad, en paralelo, cada uno escribiendo solo en su carpeta. Las dudas que dejen:
+resolvelas con la información disponible (aula, código, guiones) y preguntale al tutor solo lo imposible de resolver.
+Si un subagente se corta, retomalo con `SendMessage` y revisá qué alcanzó a escribir antes de rehacer.
+
 **Documentos de teoría o TP (el flujo es el mismo; solo cambia la fuente que lee el detector y lo que produce el corrector):**
 1. *Antes del detector*, vos convertís el documento a Markdown en `<trabajo>/plantilla/Actividad_N/` (`docx_a_md.py` o
    `pdf_a_md.py`) y corrés `python scripts/verificar_fidelidad.py conversion <fuente> <id>.base.md`. **Tiene que dar "SIN
@@ -147,10 +155,10 @@ Un par detector/corrector por actividad, en paralelo, cada uno escribiendo solo 
    y los mira el tutor. El `.base.md` no se modifica más.
 2. El **detector** audita el Markdown base (modo plantilla de `prompt-detector.md`) y escribe el informe de siempre.
 3. El **corrector** aplica el informe sobre una copia (`.final.md`), completa el encabezado de datos, regenera el PDF con
-   `assets/plantilla/generar.py` y verifica (modo plantilla de `prompt-corrector.md`). La bibliografía del apunte se copia de
-   `fuentes/bibliografia.md` (la del aula); si falta o no está confirmada, **el PDF no se genera** hasta resolverla. Las dudas que dejen:
-resolvelas con la información disponible (aula, código, guiones) y preguntale al tutor solo lo imposible de resolver.
-Si un subagente se corta, retomalo con `SendMessage` y revisá qué alcanzó a escribir antes de rehacer.
+   `assets/plantilla/generar.py` y verifica (modo plantilla de `prompt-corrector.md`). En un apunte, la bibliografía la arma
+   **eligiendo, de la lista APA 7 confirmada de la materia, las referencias del tema** (y si no puede decidir, la lista general; siempre
+   marcada con `REVISAR`); nunca agrega fuentes que no estén en el aula. Si la lista falta, no está confirmada o la referencia es
+   incompleta, **el PDF no se genera** hasta resolverlo.
 
 ### Fase 6 — Verificación independiente
 No te fíes de lo que reporta cada subagente: verificá vos con `scripts/verificar_docx.py` y `scripts/verificar_pdf.py` y
@@ -162,6 +170,9 @@ exportado es un entregable más y entra también en la revisión manual. **Leé 
 **Teoría y TP**: además corré vos `verificar_fidelidad.py cambios` (toda diferencia entre `.base.md` y `.final.md` debe estar en el
 registro de cambios), `verificar_fidelidad.py pdf` y `verificar_plantilla.py`, y mirá **todas** las páginas del PDF (primera hoja,
 etiqueta, pie, cajas, código, tablas, figuras). El PDF de la plantilla es el entregable y entra en la revisión manual.
+En teoría y TP **no hay Word corregido**: `verificar_docx.py` y `word_a_pdf.py` no aplican; el patrón de redacción lo cubre
+`verificar_plantilla.py` (con `--bibliografia <trabajo>/fuentes/bibliografia.md`, que además comprueba que la bibliografía del apunte
+salga de la lista APA 7 de la materia). Para el resto del material, todo sigue igual.
 
 ### Fase 7 — Compuerta de revisión manual (obligatoria)
 1. `python scripts/compuerta_revision.py generar --trabajo <trabajo>` crea `REVISION_MANUAL.md` con un casillero por archivo.
@@ -205,9 +216,9 @@ Numeración por actividad y sin sufijos "(1)" ni "(2)". Los duplicados se borran
 |---|---|
 | `references/flujo-detallado.md` | Antes de la Fase 1 y 2 (cómo recorrer el aula, límites del navegador) |
 | `references/criterios-redaccion.md` | Al armar CRITERIOS.md y al verificar |
-| `references/bibliografia-aula.md` | Fase 0 y 1, si hay apuntes: cómo leer la bibliografía de la sección 0 (verificada parcialmente) |
+| `references/bibliografia-aula.md` | Fase 0 y 1, si hay apuntes: cómo leer la bibliografía de la sección 0 y pasarla a APA 7 |
 | `references/formato-primera-hoja.md` | Al corregir o crear un documento (plantilla de teoría y TP, y portada del resto) |
 | `references/subagentes.md` | Antes de lanzar detector/corrector |
 | `references/gamma-pdf.md` | Solo si hay PDF de Gamma |
 | `references/lecciones-aprendidas.md` | Ante cualquier tropiezo |
-| `scripts/` | `preflight`, `extraer_docx`, `verificar_docx`, `verificar_pdf`, `word_a_pdf`, `transcribir_youtube`, `clasificar_documento`, `docx_a_md`, `pdf_a_md`, `numerar_md`, `verificar_fidelidad`, `verificar_plantilla`, `quitar_marca_gamma`, `gamma_editar`, `editar_pdf_texto`, `comparar_pdf`, `compuerta_revision` |
+| `scripts/` | `preflight`, `extraer_docx`, `verificar_docx`, `verificar_pdf`, `word_a_pdf`, `transcribir_youtube`, `clasificar_documento`, `docx_a_md`, `pdf_a_md`, `numerar_md`, `verificar_fidelidad`, `verificar_plantilla`, `verificar_bibliografia`, `quitar_marca_gamma`, `gamma_editar`, `editar_pdf_texto`, `comparar_pdf`, `compuerta_revision` |

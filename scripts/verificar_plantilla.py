@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Verificación mecánica de un documento generado con la plantilla TUPaD.
 
-Uso: python verificar_plantilla.py FINAL.md SALIDA.pdf [--sin-persona]
+Uso: python verificar_plantilla.py FINAL.md SALIDA.pdf [--sin-persona] [--bibliografia <trabajo>/fuentes/bibliografia.md]
 Comprueba el Markdown (encabezado de datos, tipo, bibliografía solo en teoría, marcas de plantilla sin completar,
 marcas <!-- REVISAR --> pendientes) y el PDF (primera hoja: materia, unidad, etiqueta, revisor; pie con numeración;
-patrones de redacción con verificar_docx.PATRONES). Código de salida 1 si algo obligatorio falla.
+patrones de redacción con verificar_docx.PATRONES). Con --bibliografia comprueba además que la bibliografía del apunte salga de la
+lista APA 7 de la materia (verificar_bibliografia.py). Código de salida 1 si algo obligatorio falla.
 NO reemplaza la lectura completa ni la revisión manual del tutor.
 """
 import re
@@ -22,7 +23,8 @@ ETIQUETA = {"apunte": "apunte teórico", "tp": "trabajo práctico"}
 
 
 def main():
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    ruta_biblio = sys.argv[sys.argv.index("--bibliografia") + 1] if "--bibliografia" in sys.argv else None
+    args = [a for a in sys.argv[1:] if not a.startswith("--") and a != ruta_biblio]
     if len(args) != 2:
         print(__doc__); return 2
     md = Path(args[0]).read_text(encoding="utf-8")
@@ -50,6 +52,12 @@ def main():
     if re.search(r"\{\{[A-Z_]+\}\}|Nombre Apellido|Título del", md):
         fallas.append("quedan marcas de plantilla sin completar")
     pendientes = len(re.findall(r"<!--\s*REVISAR", cuerpo))
+    if tipo == "apunte" and ruta_biblio:
+        from verificar_bibliografia import verificar_uso
+        rb = verificar_uso(args[0], ruta_biblio)
+        fallas += [f"bibliografía: {x}" for x in rb["fallas"]]
+    elif tipo == "apunte":
+        print("AVISO: sin --bibliografia no se comprueba que la bibliografía salga de la lista de la materia.")
 
     d = fitz.open(args[1])
     p1 = re.sub(r"\s+", " ", d[0].get_text())

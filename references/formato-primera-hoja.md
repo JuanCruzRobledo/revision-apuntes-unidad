@@ -21,11 +21,11 @@ Cabecera (logo UTN y nombre de la carrera) en todas las hojas; pie con `Materia`
 - **TP** (`tipo: tp`): Objetivos, Consignas (cada `###` es un ejercicio numerado, con `[N puntos]` al final del título),
   Criterios de evaluación y Formato de entrega. **El TP no lleva bibliografía.**
 
-**Bibliografía (solo teoría)**: obligatoria, al final, como lista numerada. **Sale de fuentes reales: la sección 0 del aula de la
-materia**, label "¿Qué necesitás para estudiar?" (cómo leerla, formato del archivo y decisiones pendientes en
-`references/bibliografia-aula.md`). **El aula no trae un formato único** (Prog II en APA 7, Prog III con otro formato, Prog I con
-prefijos): se transcribe tal cual, sin emojis, hasta que el tutor decida si se unifica a APA 7. Nunca se busca en la web ni se inventa. Si
-no se pudo leer, no hay bibliografía o el tutor no la confirmó, **el documento no se genera** (`generar.py` se detiene).
+**Bibliografía (solo teoría)**: obligatoria, al final, como lista numerada **en APA 7**. **Sale de fuentes reales: la sección 0 del
+aula de la materia**, que cada persona lee de su aula y convierte a APA 7 sin agregar datos, con confirmación del tutor
+(procedimiento, reglas de conversión y selección por tema en `references/bibliografia-aula.md`). Cada apunte lleva las referencias del
+**tema específico**; si no se puede decidir, la general de la materia, siempre usando la fuente de la materia. Nunca se busca en la web ni se
+inventa. Si no se pudo leer, no hay bibliografía, no está confirmada o una referencia es incompleta, **el documento no se genera**.
 
 **Contenido vs. estilo**: el contenido del tema se respeta SÍ o SÍ (no se quita ni se resume nada; solo se corrigen los errores
 que detecta la auditoría). Lo que se unifica es el estilo y la estructura. La portada original del documento (título, materia,

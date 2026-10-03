@@ -23,8 +23,9 @@ Cada subagente trabaja UNA actividad: el material de esa actividad ({{TIPOS_DE_M
 5. Se conservan las ampliaciones correctas que no se ven en los videos (no recortar contenido correcto).
 6. Formato: NO se cambia el formato que cada archivo ya tiene (estilos, fuentes, tablas, márgenes, subtítulos, institución,
    fecha, estructura). Nombre de la materia = "{{MATERIA}}" (el del aula) en la portada.
-7. Bibliografía: en apuntes de la plantilla sale de la sección 0 del aula (`fuentes/bibliografia.md`), copiada textual y sin
-   agregar nada. En el resto del material, si el archivo la trae se verifica que sea real y específica del tema (no la misma lista
+7. Bibliografía: en apuntes de la plantilla sale de la sección 0 del aula (`fuentes/bibliografia.md`), convertida a APA 7 sin
+   agregar ningún dato y confirmada por el tutor; cada apunte lleva las referencias de su tema (si no se puede decidir, la general
+   de la materia). En el resto del material, si el archivo la trae se verifica que sea real y específica del tema (no la misma lista
    genérica en todos); no se mueve ni se reformatea. Si no la trae, se informa y decide el tutor.
 8. {{DECISIONES_EXTRA}}
 

@@ -31,8 +31,8 @@ de IA**, errores temáticos y técnicos (contra el código real del curso, si la
 (`assets/plantilla/`: Markdown -> HTML -> PDF con Chrome o Edge) para que todas las materias y unidades salgan iguales en estilo
 y estructura. El flujo no cambia: se convierte el documento a Markdown, el detector audita ese Markdown, el corrector aplica el
 informe sobre él y se regenera el PDF. Primera hoja: materia, unidad, etiqueta (Apunte teórico / Trabajo práctico), título y
-revisor. El apunte termina en una bibliografía tomada de la **sección 0 del aula** (si no se puede leer o no está confirmada, el PDF no se genera; el formato del aula
-no es uniforme y se transcribe tal cual); el TP no lleva
+revisor. El apunte termina en una bibliografía tomada de la **sección 0 del aula** (si no se puede leer o no está confirmada, el PDF no se genera; se convierte a APA 7 sin agregar datos y la
+confirma el tutor); el TP no lleva
 bibliografía. El contenido del tema nunca se quita ni se resume: `verificar_fidelidad.py` lo comprueba.
 
 **Qué no hace**: no sube nada al aula, no inventa bibliografía ni versiones y no modifica los originales. **Las presentaciones
@@ -62,7 +62,7 @@ La skill queda disponible para tu agente y se carga sola cuando pedís revisar, 
 |---|---|---|
 | **Una vía para leer el aula** (solo lectura) | Inventario del aula | Skill `tup-campus-navigator` (solo campus TUP): `git clone https://github.com/Group-Active-IA/Skill-Moodle.git ~/.claude/skills/tup-campus-navigator` y `bash ~/.claude/skills/tup-campus-navigator/install.sh` (en Windows, desde Git Bash); requiere acceso al repo. **O** Claude in Chrome con tu sesión del campus abierta (sirve para cualquier campus) |
 | Python 3.10+, PyMuPDF, python-docx, Pillow | Extraer, verificar y editar documentos y PDF | `pip install -r requirements.txt` |
-| Acceso al aula (skill del campus o Claude in Chrome) | **Con apuntes teóricos es necesario**: la bibliografía se lee de la sección 0 del aula (bloque "Qué necesitás para estudiar"). Leída y probada en Prog I, II y III el 2026-10-03; quedan decisiones pendientes del tutor (`references/bibliografia-aula.md`) | Ver la fila de arriba |
+| Acceso al aula (skill del campus o Claude in Chrome) | **Con apuntes teóricos es necesario**: la bibliografía se lee de la sección 0 del aula (bloque "Qué necesitás para estudiar"). Cada persona la lee del aula de su materia (la skill no trae bibliografías guardadas); procedimiento y conversión a APA 7 en `references/bibliografia-aula.md` | Ver la fila de arriba |
 | `markdown`, `pygments` y **Chrome o Edge** | Generar con la plantilla el PDF de teoría y TP (Windows, macOS y Linux) | `pip install -r requirements.txt` + navegador. `preflight.py --con-plantilla` lo verifica |
 | Microsoft Word o LibreOffice | Revisar el layout de los `.docx` (exportar a PDF) | Recomendado. Sin esto, la revisión visual del Word queda 100 % a cargo del tutor |
 | youtube-transcript-api | Transcripciones de videos | Opcional (incluida en `requirements.txt`). Si YouTube bloquea, se trabaja con los guiones |
@@ -99,6 +99,7 @@ revision-apuntes-unidad/
 │   ├── numerar_md.py             # Markdown con líneas numeradas para el detector
 │   ├── verificar_fidelidad.py    # no se perdió contenido: fuente->MD, MD base->final, MD->PDF
 │   ├── verificar_plantilla.py    # primera hoja, etiqueta, pie, bibliografía según tipo
+│   ├── verificar_bibliografia.py # la conversión a APA 7 no inventa datos; la bibliografía del apunte sale de la lista de la materia
 │   ├── verificar_docx.py         # patrones, campo PAGE, datos mínimos de portada, metadatos (--sin-persona)
 │   ├── verificar_pdf.py          # marca de Gamma por píxeles, patrones, cambios vs original (--sin-persona, --patron)
 │   ├── word_a_pdf.py             # exporta los Word corregidos a PDF (Word o LibreOffice) y verifica páginas
@@ -112,7 +113,7 @@ revision-apuntes-unidad/
 ├── references/                   # flujo, criterios, formato, subagentes, Gamma, lecciones
 └── assets/
     ├── plantilla/                # plantilla única de teoría y TP (generar.py, estilos, HTML, logo, fuentes Inter/JetBrains Mono)
-    ├── templates/                # CRITERIOS, prompts de detector y corrector
+    ├── templates/                # CRITERIOS, prompts de detector y corrector, leer_bibliografia_seccion0.js
     └── fonts/                    # fuentes OFL (con su licencia) para editar PDF de Gamma
 ```
 

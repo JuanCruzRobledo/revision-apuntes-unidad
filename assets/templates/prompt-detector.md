@@ -36,7 +36,7 @@ Se agrega cuando el documento fue confirmado como `apunte` o `tp` y ya fue conve
 - El informe es el mismo (resumen, contraste, tabla de hallazgos con texto original CITADO, cierre formal, dudas). La ubicación pasa
   a ser `[Lnnn]`. El corrector va a aplicar tus propuestas sobre ese archivo.
 - **No propongas cambios de formato**: el diseño y la estructura los pone la plantilla. Sí informá, en "cierre formal": si es
-  teoría y qué bibliografía trae el documento comparada con `{{TRABAJO}}/fuentes/bibliografia.md` (la del aula; reportá lo que difiere,
+  teoría y qué bibliografía trae el documento comparada con `{{TRABAJO}}/fuentes/bibliografia.md` (la del aula, ya en APA 7; reportá lo que difiere,
   **no propongas referencias nuevas ni las busques en la web**), si es TP y trae bibliografía (se elimina), si faltan
   secciones propias del tipo (TP: Objetivos, Consignas, Criterios de evaluación, Formato de entrega), y la portada original
   (título, materia, unidad, autor, año) que la primera hoja de la plantilla va a reemplazar.

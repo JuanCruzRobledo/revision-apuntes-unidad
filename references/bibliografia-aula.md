@@ -1,73 +1,84 @@
-# Bibliografía de los apuntes: se toma de la sección 0 del aula
+# Bibliografía de los apuntes: se lee de la sección 0 del aula y se pasa a APA 7
 
-> **Estado: verificado parcialmente el 2026-10-03** (solo lectura, cursos 74, 81 y 82 de la cohorte Agosto 2026: Programación I, II
-> y III). Lo que figura como **[confirmado]** se vio en el aula real. Lo que sigue como **[decide el tutor]** es una decisión pendiente,
-> no un dato técnico. Falta probar el flujo completo de punta a punta con un apunte real.
+> **La skill no trae ninguna bibliografía guardada.** Cada persona, en cada corrida, la lee del aula de **su** materia y la
+> convierte. Así sigue funcionando aunque el aula cambie de un año a otro: lo que sigue es un **procedimiento con alternativas**,
+> no una lista de referencias. Estructura validada en el campus TUP (cohorte Agosto 2026) el 2026-10-03; puede cambiar.
 
 ## Regla
 La bibliografía de un **apunte teórico** sale de **fuentes reales**: la sección 0 del aula de la materia. La skill **no la busca en
-la web, no la completa y no la inventa**. El TP no lleva bibliografía. Si no se pudo leer la sección 0 o no tiene bibliografía,
-el apunte queda **bloqueado por bibliografía** (el PDF no se genera) hasta que el tutor lo resuelva.
+la web, no la completa y no la inventa**. Todas las bibliografías salen en **APA 7**, aunque el aula las tenga en otro formato
+(decisión del tutor). El TP no lleva bibliografía. Si no se pudo leer la sección 0, no tiene bibliografía o alguna referencia
+queda incompleta, los apuntes que la necesiten quedan **bloqueados por bibliografía** (el PDF no se genera) hasta que el tutor lo
+resuelva en el campus.
 
-## Dónde está [confirmado]
-- URL de la sección 0: `.../course/view.php?id=<ID>&section=0` (un ID por materia; con `&section=0` el DOM trae solo esa sección).
-  Los IDs de la cohorte vigente salen de `aulas` de la skill del campus (Agosto 2026: Prog I = 74, Prog II = 81, Prog III = 82).
-- La sección 0 tiene, en orden: foros, la lección "Información importante sobre la materia", a veces una encuesta, un **label** con el
-  título **"🧰 ¿QUÉ NECESITÁS PARA ESTUDIAR?"** y el cuestionario inicial. **La posición del label cambia** (4.º en Prog II y III, 5.º
-  en Prog I): se lo ubica **por su texto** ("NECESITÁS"), nunca por índice.
-- Dentro del label: `H3 "📚 Materiales de Estudio"` > `H4 "I. BIBLIOGRAFÍA"` con una lista `<li>` > `H4 "II. DOCUMENTOS"` (o
-  "II. MATERIALES COMPLEMENTARIOS") y, a veces, `H3 "💻 Software que utilizarás"`. **La bibliografía son los `<li>` entre
-  "I. BIBLIOGRAFÍA" y el siguiente `H4`/`H3`.**
-- En la pantalla el label aparece **plegado** ("Mostrar más"): `get_page_text` o una captura **no traen** la bibliografía. Hay que
-  leer el DOM (`textContent` del label) con `javascript_tool`.
+## Procedimiento (una vez por materia; lo hace quien corre la skill)
+1. **ID del curso.** Se pide en la Fase 0 la URL del aula (`.../course/view.php?id=<ID>`). Con la skill `tup-campus-navigator`,
+   `aulas` lista los cursos del tutor. No se guardan IDs fijos: cambian con la cohorte.
+2. **Abrir la sección 0**: `.../course/view.php?id=<ID>&section=0` (el DOM trae solo esa sección). Con Claude in Chrome, la sesión
+   del tutor ya iniciada (**nunca** pidas ni escribas credenciales; solo lectura, no edites ni descargues). Esperá 2-3 segundos: el
+   DOM carga tarde y `li.activity` puede venir vacío al principio.
+3. **Ubicar el bloque, por contenido y no por posición** (la posición cambia entre materias y puede cambiar con los años):
+   a. el label cuyo texto contiene **"NECESITÁS PARA ESTUDIAR"** (así estaba en 2026), y dentro, el encabezado **"BIBLIOGRAFÍA"**;
+   b. si no aparece, cualquier bloque de la sección 0 con un encabezado que contenga "BIBLIOGRAF";
+   c. si tampoco, **listá los títulos de las actividades de la sección 0 y preguntale al tutor dónde está**. Nunca adivines ni la
+      busques en la web.
+   El bloque suele estar **plegado** en pantalla ("Mostrar más"): `get_page_text` o una captura **no lo traen**; hay que leer el DOM.
+4. **Leerlo**: `assets/templates/leer_bibliografia_seccion0.js` con `javascript_tool`. Límites del navegador: la salida se corta
+   cerca de los 1000 caracteres (el script entrega por tramos: `DESDE`/`CUANTAS`, seguí hasta `siguiente=null`) y se **bloquea** si
+   el texto trae una URL con parámetros ("Cookie/query string data"): las URL se reemplazan por `[URL]` y si aun así se bloquea,
+   bajá `CUANTAS` o dejá `ENLACES=false`. Un enlace que importe (por ejemplo una lista de YouTube) **pedíselo al tutor**; no lo adivines.
+5. **Transcribir** a `<trabajo>/fuentes/bibliografia.md` (formato abajo), **textual y sin emojis decorativos**, separando las líneas
+   que no son referencias ("Videos del aula virtual", "Apuntes de la Cátedra", "Back up en caso de links...") y **sin corregir erratas**
+   (se avisan al tutor).
+6. **Convertir a APA 7** (reglas abajo) y correr `python scripts/verificar_bibliografia.py apa <trabajo>/fuentes/bibliografia.md`.
+7. **Mostrarle al tutor la tabla original -> APA 7** (con las incompletas y las erratas) junto con el inventario y esperar su OK.
+   Recién entonces el estado pasa a `confirmada por <nombre>`. Los formatos del aula difieren entre materias y los datos pueden
+   faltar: **el tutor confirma siempre**.
 
-## El formato NO es uniforme entre materias [confirmado]
-| Materia | Cómo viene la bibliografía |
-|---|---|
-| Programación II (81) | Referencias en APA 7 (`Deitel, P. J., & Deitel, H. M. (2016). Título (10.ª ed.). Editorial.`) más 2 líneas que no son referencias ("Apuntes de la Cátedra", "Videos del aula virtual") y una lista de reproducción de YouTube con enlace |
-| Programación III (82) | Formato propio, sin APA: `📖 Título — Autor (Editorial, Año)`; mezcla libros con tutoriales y documentación web; cada ítem lleva el emoji 📖 |
-| Programación I (74) | Prefijo `Libro:` en cada ítem, formatos mezclados (APA parcial y "Autor. Título"), líneas que no son referencias ("Videos del aula virtual", "Back up en caso de links expirados o rotos") y erratas ("ntroduction") |
-
-Consecuencias: **no se puede asumir APA 7**; hay líneas que no son referencias; puede haber erratas; y un enlace puede no estar en
-el texto (queda en el `href` del `<a>`).
-
-## Cómo leerla (solo lectura)
-1. Pedí en la Fase 0 la **URL del aula con el ID del curso** (si el tutor ya dio el link de la unidad, el ID sale de ahí).
-2. Leé la sección 0 con la skill `tup-campus-navigator` o con Claude in Chrome (sesión del tutor ya iniciada; **nunca** pidas ni
-   escribas credenciales; no edites ni descargues nada). Esperá 2-3 segundos tras navegar: el DOM carga tarde y a veces `li.activity`
-   viene vacío al principio.
-3. Con `javascript_tool`, extraé el label (`assets/templates/leer_bibliografia_seccion0.js`, probado en Prog I). **Límites del
-   navegador [confirmado]**: la salida se corta cerca de los 1000 caracteres (el script la entrega por tramos: cambiá `DESDE`
-   hasta que `siguiente` sea null) y se bloquea ("Cookie/query string data") si contiene una URL con parámetros. El script reemplaza las URL por `[URL]`
-   en el texto y devuelve aparte host + ruta de cada enlace; si una referencia depende de la query (por ejemplo una lista de YouTube),
-   **pedile al tutor que pegue ese enlace**: no lo adivines.
-4. Copiá las referencias a `<trabajo>/fuentes/bibliografia.md` con este formato:
+## Formato de `fuentes/bibliografia.md`
 ```
 # Bibliografía de <materia>
-Fuente: sección 0 del aula (curso <ID>), bloque "Materiales de Estudio / I. BIBLIOGRAFÍA". Leída el <fecha>.
+Fuente: sección 0 del aula (curso <ID>), bloque "<título del bloque>". Leída el <fecha>.
 Estado: pendiente de confirmación del tutor | confirmada por <nombre>
 
-## Referencias (van al apunte)
-1. <referencia tal como figura en el aula, sin emojis decorativos>
+## Referencias (original)
+1. <referencia tal como figura en el aula, sin emojis>
+2. ...
 
-## Líneas que no son referencias (no van al apunte; se muestran al tutor)
+## Referencias (APA 7)
+1. <misma referencia en APA 7>      (misma numeración y orden que arriba)
+2. [INCOMPLETA: falta título]
+
+## Líneas que no son referencias (no van al apunte)
 - Videos del aula virtual
 ```
-5. Mostrásela al tutor junto con el inventario (Fase 1) y esperá su OK, **marcando erratas evidentes sin corregirlas** (por ejemplo
-   "ntroduction"). Si no hay acceso al aula, no se encuentra el label o no trae bibliografía: **no sigas con los apuntes**; avisá y
-   dejá esos documentos como "bloqueado por bibliografía".
 
-## Cómo se usa en cada apunte
-- El **corrector** copia al final del `.final.md` la sección `## Bibliografía` con las referencias de `fuentes/bibliografia.md`
-  (solo las de "Referencias"), como lista numerada, **sin agregar ninguna que no esté ahí**. Solo se quitan los emojis decorativos.
-- El **detector** solo informa: compara la bibliografía que trae el documento con la del aula y reporta lo que difiere. No propone
-  referencias nuevas.
+## Reglas de la conversión a APA 7 (en español)
+- **Solo se reordena y se da formato a datos que ya están en el original.** Nunca se agrega un autor, un año, una editorial, una
+  edición, un capítulo, una ciudad ni un enlace. `verificar_bibliografia.py apa` falla si aparece un dato que no estaba.
+- **Libro**: `Apellido, I. (Año). *Título* (n.ª ed.). Editorial.` Varios autores: `Apellido, I., & Apellido, I. (Año).` (el último con
+  `&`). La inicial sale del nombre de pila **si figura en el original**. La edición solo si figura.
+- **Sin fecha**: `(s. f.)`. Es válido en APA 7 y no inventa nada.
+- **Página web, tutorial o documentación**: `Autor u organización. (Año). *Título*. Sitio. URL`, solo con los datos presentes. Si el
+  autor es el propio sitio (por ejemplo, "Baeldung"), va como autor.
+- **Video o lista de reproducción**: `Autor. (Año). *Título* [Lista de reproducción]. YouTube. URL`, solo con lo que figura.
+- **Incompleta**: si falta el **autor** o el **título** (o la **editorial** de un libro), no se completa: se escribe
+  `[INCOMPLETA: falta <dato>]` en la lista APA. Esa referencia **bloquea** los apuntes que la usen hasta que el tutor la complete en
+  el campus y se vuelva a leer.
+- Las erratas del aula se transcriben tal cual en la lista original y se avisan; en APA se transcriben igual (no se "arreglan").
 
-## Decisiones pendientes del tutor [decide el tutor]
-1. **Formato**: la plantilla pedía APA 7, pero el aula trae formatos distintos por materia. Mientras no decida, se transcribe
-   **tal cual** (sin emojis) y se avisa; convertir a APA 7 implica reordenar autor, año y editorial, y eso lo valida el tutor.
-2. **Qué referencias lleva cada apunte**: ¿toda la bibliografía de la materia o solo las pertinentes al tema? Mientras no decida,
-   el corrector pone la lista completa y la marca con `<!-- REVISAR -->`.
-3. **Líneas que no son referencias** ("Videos del aula virtual", "Apuntes de la Cátedra", "Back up en caso de links..."): por defecto
-   no van al apunte.
-4. **Erratas** en el aula: se transcriben tal cual y se le avisan al tutor para que las corrija en el campus.
+## Qué referencias lleva cada apunte (decisión del tutor: las del tema; si no, la general de la materia)
+- El **corrector** elige, de la lista APA 7 **confirmada**, las referencias que correspondan al **tema específico** del apunte
+  (por título y alcance, por ejemplo un libro de Java para un apunte de interfaces), y **escribe en el informe de cambios por qué**
+  eligió cada una. **Solo elige de esa lista**: nunca agrega una fuente que no esté en el aula.
+- Si no puede decidir con criterio, pone la **lista general** de la materia. En ambos casos marca la sección con
+  `<!-- REVISAR: selección de referencias -->` para que el tutor la revise en la compuerta.
+- Copia las referencias **textualmente** de la lista APA 7 como lista numerada, sin ninguna incompleta.
+- Comprobación: `python scripts/verificar_bibliografia.py uso <final.md> <trabajo>/fuentes/bibliografia.md` (cada referencia del
+  apunte tiene que estar en la lista APA 7 y no ser incompleta).
+- El **detector** solo informa lo que difiere entre la bibliografía que trae el documento y la del aula. No propone fuentes nuevas.
+
+## Variaciones que se vieron (solo como ejemplo de por qué el tutor confirma; pueden haber cambiado)
+En 2026, entre tres materias del mismo campus: una en APA 7 más líneas que no son referencias; otra con `📖 Título — Autor
+(Editorial, Año)`, sin APA y mezclando libros con tutoriales web; y otra con prefijo `Libro:`, formatos mezclados, una errata y un
+paréntesis sin cerrar. Por eso no se asume el formato.
