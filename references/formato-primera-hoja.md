@@ -1,11 +1,47 @@
-# Portada: datos mínimos (lo único estricto)
+# Portada y formato: plantilla única (teoría y TP) y datos mínimos (resto del material)
 
-Por ahora **no hay un formato estándar de documento**: cada materia y cada unidad pueden traer material distinto (Word, PDF,
-presentaciones, otros). La skill corrige el contenido y **respeta el formato que el archivo ya tiene**: no lo rehace, no cambia
-estilos, fuentes, tablas ni márgenes, y no mueve secciones de lugar. Cuando exista una plantilla oficial, este archivo se
-reemplaza por ella.
+## A. Teoría y TP: plantilla única (`assets/plantilla/`)
+Todos los documentos **teóricos (apuntes)** y **TP** de todas las materias salen con la misma plantilla (Markdown -> HTML -> PDF
+con Chrome o Edge). El diseño y la estructura **no se rediseñan**: la plantilla se usa tal cual. El resultado final es siempre un PDF.
 
-Lo único que se exige es que la portada (primera hoja o diapositiva) identifique el material y a quien lo auditó:
+**Primera hoja** (los datos salen de la Fase 0; el revisor es quien hace la auditoría; no hay autor ni año):
+```
+Materia: <materia>
+UNIDAD <N> · <NOMBRE DE LA UNIDAD>
+[ APUNTE TEÓRICO ]  o  [ TRABAJO PRÁCTICO ]
+<Título grande: tema del apunte, o título del TP>
+Revisor de la unidad: Prof. <Nombre y apellido>
+```
+El título grande sale una sola vez: si el Markdown trae su propio `# Título`, se descarta. No hay línea "Tema N.M".
+Cabecera (logo UTN y nombre de la carrera) en todas las hojas; pie con `Materia` y `Página N de M`.
+
+**Estructura por tipo**
+- **Apunte teórico** (`tipo: apunte`): secciones `##` con el desarrollo, código con su explicación, cajas (importante, nota,
+  buenas prácticas, analogía), tablas y, al final, `## Bibliografía`.
+- **TP** (`tipo: tp`): Objetivos, Consignas (cada `###` es un ejercicio numerado, con `[N puntos]` al final del título),
+  Criterios de evaluación y Formato de entrega. **El TP no lleva bibliografía.**
+
+**Bibliografía (solo teoría)**: obligatoria, al final, como lista numerada en APA 7 (con capítulos si corresponde). **Nunca se
+inventa**: se verifica cada referencia con búsqueda web. Si no se puede verificar, **el documento no se genera** hasta resolverlo
+(`generar.py` se detiene). Más adelante se definirá de dónde se extrae; mientras tanto la resuelve el tutor.
+
+**Contenido vs. estilo**: el contenido del tema se respeta SÍ o SÍ (no se quita ni se resume nada; solo se corrigen los errores
+que detecta la auditoría). Lo que se unifica es el estilo y la estructura. La portada original del documento (título, materia,
+unidad, autor, año) se reemplaza por la primera hoja de la plantilla y eso se registra en el informe de cambios.
+
+**Qué documentos entran**: los que el tutor confirme en la Fase 1 como `apunte` o `tp` (`scripts/clasificar_documento.py` sugiere).
+Las **presentaciones** (Gamma o no: PDF apaisado 16:9 con poco texto) **no pasan por la plantilla**. Un PDF generado con Gamma pero
+en A4 vertical con texto corrido es un documento y sí pasa.
+
+**Cómo se reconstruye** (ver SKILL.md, Fase 5): fuente -> Markdown (`docx_a_md.py` o `pdf_a_md.py`) -> el detector audita el
+Markdown -> el corrector aplica el informe sobre el Markdown -> `assets/plantilla/generar.py` -> PDF. Comprobaciones:
+`verificar_fidelidad.py` (no se perdió contenido) y `verificar_plantilla.py` (primera hoja, etiqueta, pie, bibliografía).
+
+## B. Resto del material (presentaciones, Gamma, otros PDF, pptx)
+La plantilla **no aplica**. Se corrige el contenido y se **respeta el formato que el archivo ya tiene**: no se rehace, no cambia
+estilos, fuentes, tablas ni márgenes, y no se mueven secciones de lugar.
+
+Lo único que se exige a este material es que la portada (primera hoja o diapositiva) identifique el material y a quien lo auditó:
 
 ```
 Materia: <materia>

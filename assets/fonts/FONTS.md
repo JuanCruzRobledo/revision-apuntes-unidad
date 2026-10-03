@@ -22,3 +22,8 @@ está en el archivo `OFL-<familia>.txt` de esta carpeta, copiado tal cual del re
 La licencia OFL permite usar, estudiar, copiar, modificar y redistribuir las fuentes, siempre que se conserve el aviso de
 copyright y la licencia y que las fuentes no se vendan por sí solas. Estos archivos conservan ambos. Si una presentación usa una
 familia que no está acá, descargala del repositorio de Google Fonts (avisando al tutor) y agregala a esta carpeta con su OFL.
+
+## Fuentes de la plantilla (assets/plantilla/assets/fuentes)
+Inter y JetBrains Mono, ambas bajo SIL OFL 1.1, van embebidas en cada HTML que genera la plantilla de teoría y TP.
+El texto de licencia de Inter está en `assets/plantilla/assets/fuentes/OFL-inter.txt`. JetBrains Mono se distribuye bajo la misma
+licencia (https://github.com/JetBrains/JetBrainsMono). El logo de la UTN es de uso institucional.

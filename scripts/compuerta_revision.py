@@ -28,7 +28,12 @@ CHECK = {
               "Dudas abiertas del informe de cambios resueltas o aceptadas"],
     ".pdf": ["Se abre y tiene todas las páginas", "Sin marca de agua ni links a Gamma (mirar la esquina inferior derecha)",
              "Texto editado sin desbordes ni fuentes distintas", "Diagramas e imágenes: sin rótulos deformados ni errores",
-             "Dudas abiertas del informe de cambios resueltas o aceptadas"],
+             "Dudas abiertas del informe de cambios resueltas o aceptadas",
+             "Si es un PDF de la plantilla: primera hoja correcta, etiqueta (Apunte teórico / Trabajo práctico) y bibliografía "
+             "solo en teoría",
+             "Si es un PDF de la plantilla: estilos bien (títulos, cajas, tablas, código sin cortar, figuras de buen tamaño y en su lugar)",
+             "Si es un PDF de la plantilla: comparado página por página con el original, no falta ninguna página, sección, figura ni "
+             "bloque de código y no se ve raro"],
 }
 DEFAULT_CHECK = ["Se abre correctamente", "El contenido es el esperado y no tiene errores", "Dudas abiertas resueltas o aceptadas"]
 

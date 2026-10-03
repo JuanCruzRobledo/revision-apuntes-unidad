@@ -28,3 +28,17 @@ propiedades); (e) preguntas o dudas que NO resolviste por tu cuenta. Si algo es 
 REGLAS: sin emojis en el informe; sin secretos. Tu respuesta final es breve: ruta del informe, conteos, veredicto en 2-3
 líneas y preguntas abiertas. No pegues el informe completo.
 ```
+
+## MODO PLANTILLA (solo para documentos de teoría o TP; el resto del prompt no cambia)
+Se agrega cuando el documento fue confirmado como `apunte` o `tp` y ya fue convertido a Markdown (`{{BASE_MD}}`). En ese caso:
+- **Leé el Markdown base, no el Word ni el PDF**: `python scripts/numerar_md.py {{BASE_MD}}` (cita ubicaciones como `[L012]`).
+  El Markdown es la fuente del informe; el PDF original solo se mira si una marca `<!-- REVISAR -->` lo pide.
+- El informe es el mismo (resumen, contraste, tabla de hallazgos con texto original CITADO, cierre formal, dudas). La ubicación pasa
+  a ser `[Lnnn]`. El corrector va a aplicar tus propuestas sobre ese archivo.
+- **No propongas cambios de formato**: el diseño y la estructura los pone la plantilla. Sí informá, en "cierre formal": si es
+  teoría y falta la bibliografía o no es verificable (**nunca la inventes**), si es TP y trae bibliografía (se elimina), si faltan
+  secciones propias del tipo (TP: Objetivos, Consignas, Criterios de evaluación, Formato de entrega), y la portada original
+  (título, materia, unidad, autor, año) que la primera hoja de la plantilla va a reemplazar.
+- Listá cada marca `<!-- REVISAR -->` del Markdown: figuras (su texto interno no se audita), lenguajes de código adivinados, líneas
+  de código partidas. No las resuelvas: son dudas para el corrector y el tutor.
+- Un hallazgo no puede pedir quitar o resumir contenido del tema: solo corregir errores.

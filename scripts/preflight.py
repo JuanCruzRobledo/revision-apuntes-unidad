@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Preflight de dependencias de la skill revision-apuntes-unidad.
 
-Uso: python preflight.py [--sin-gamma]
+Uso: python preflight.py [--sin-gamma] [--con-plantilla]
+--con-plantilla: exige también lo necesario para generar teoría y TP con la plantilla (Chrome o Edge, markdown, pygments).
+Sin esa opción, lo de la plantilla se muestra pero no frena (hay unidades que solo tienen presentaciones).
 Verifica lo necesario ANTES de empezar y dice exactamente qué instalar si falta algo.
 Código de salida: 0 = todo lo obligatorio está; 1 = falta algo obligatorio.
 """
@@ -12,7 +14,7 @@ import sys
 from pathlib import Path
 
 HOME = Path.home()
-OBLIG, OPC = [], []
+OBLIG, OPC, PLANT = [], [], []
 
 
 def modulo(nombre):
@@ -34,6 +36,23 @@ def word_o_libreoffice():
         "/Applications/LibreOffice.app",
     ]
     return "Word/LibreOffice" if any(os.path.exists(c) for c in candidatos) else None
+
+
+def navegador_pdf():
+    candidatos = [
+        r"C:\Program Files\Google\Chrome\Application\chrome.exe", r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+        r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe", r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+        "/usr/bin/google-chrome", "/usr/bin/google-chrome-stable", "/usr/bin/chromium", "/usr/bin/chromium-browser",
+        "/snap/bin/chromium", "/usr/bin/microsoft-edge",
+    ]
+    for c in candidatos:
+        if os.path.exists(c):
+            return c
+    for n in ("chrome", "msedge", "google-chrome", "chromium"):
+        if shutil.which(n):
+            return shutil.which(n)
+    return None
 
 
 def chequeo(lista, ok, nombre, como_instalar, detalle=""):
@@ -60,15 +79,24 @@ def main():
     if not sin_gamma:
         chequeo(OPC, (Path(__file__).resolve().parent.parent / "assets" / "fonts" / "OpenSans-Regular.ttf").exists(),
                 "Fuentes incluidas en assets/fonts (para editar PDF de Gamma)", "Reinstalar la skill")
+    # Plantilla única (teoría y TP): Markdown -> HTML -> PDF con Chrome o Edge
+    chequeo(PLANT, modulo("markdown"), "markdown", "pip install markdown")
+    chequeo(PLANT, modulo("pygments"), "pygments (resaltado de código)", "pip install pygments")
+    nav = navegador_pdf()
+    chequeo(PLANT, nav is not None, "Chrome o Edge (imprime el PDF de la plantilla)",
+            "Instalar Google Chrome o Microsoft Edge (en Linux: chromium)", nav or "")
+    chequeo(PLANT, (Path(__file__).resolve().parent.parent / "assets" / "plantilla" / "generar.py").exists(),
+            "Plantilla incluida en assets/plantilla", "Reinstalar la skill")
+    con_plantilla = "--con-plantilla" in sys.argv
     falta = False
     print("== Preflight de revision-apuntes-unidad ==")
-    for titulo, lista in (("OBLIGATORIO", OBLIG), ("RECOMENDADO", OPC)):
+    for titulo, lista in (("OBLIGATORIO", OBLIG), ("PLANTILLA (obligatorio si hay teoría o TP)" , PLANT), ("RECOMENDADO", OPC)):
         print(f"\n{titulo}")
         for ok, nombre, como, det in lista:
             print(f"  [{'OK' if ok else 'FALTA'}] {nombre}" + (f"  ({det})" if det else ""))
             if not ok:
                 print(f"         -> {como}")
-                if titulo == "OBLIGATORIO":
+                if titulo == "OBLIGATORIO" or (con_plantilla and titulo.startswith("PLANTILLA")):
                     falta = True
     print("\nNo se puede seguir hasta resolver lo OBLIGATORIO." if falta else "\nTodo lo obligatorio está. Se puede seguir.")
     return 1 if falta else 0

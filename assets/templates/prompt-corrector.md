@@ -34,3 +34,29 @@ píxeles; corregí el texto con scripts/editar_pdf_texto.py o gamma_editar.py (f
 antes/después cada página y comparando por píxeles; si un diagrama es una imagen con errores, parchealo o documentalo; si un
 PDF no queda equivalente, no lo entregues como final: dejá el texto exacto a cambiar por diapositiva." Si no hay Gamma:
 "No hay PDF de Gamma en esta actividad."
+
+## MODO PLANTILLA (solo para teoría o TP; el resto del prompt no cambia, salvo lo que se indica)
+En este modo el "archivo corregido" se **reconstruye sobre la plantilla** en lugar de editar el original. No se corrige sobre el Word.
+```
+Entradas: {{BASE_MD}} (Markdown convertido y verificado), el informe del detector, CRITERIOS.md. Tipo: {{TIPO}} (apunte | tp).
+Trabajá en {{TRABAJO}}/plantilla/Actividad_{{N}}/ y NO toques el original ni el .base.md.
+1. Copiá {{BASE_MD}} a {{ID}}.final.md y aplicá TODOS los hallazgos del informe sobre esa copia (mismas reglas: "no aplicado" con motivo).
+   El contenido del tema se respeta: no quites ni resumas nada; solo corregí lo que el informe detectó.
+2. Encabezado de datos (`---` ... `---`): tipo, materia, unidad_num, unidad_titulo, tema (apunte) o titulo (tp), revisor (sin "Prof.").
+   Los datos salen de CRITERIOS.md / Fase 0. No hay autor ni año.
+3. Portada original: reemplazala por la primera hoja de la plantilla (que ya trae materia, unidad, etiqueta, título y revisor) y
+   registralo en el informe de cambios. El título grande no se repite: si el Markdown empieza con `# Título`, es el título general.
+4. Estructura del tipo: apunte -> `## Bibliografía` al final, APA 7, lista numerada, SOLO referencias que verificaste con búsqueda web
+   (nunca inventes autores, años, ediciones ni capítulos). Si no podés verificarla, NO generes el PDF: dejalo en "bloqueado por
+   bibliografía" y avisá. tp -> sin bibliografía; Objetivos, Consignas (`###` por ejercicio, `[N puntos]`), Criterios, Formato de entrega.
+5. Resolvé cada marca `<!-- REVISAR -->` que puedas (lenguaje del bloque de código, líneas partidas) y borrala; las figuras se dejan
+   con su marca: las mira el tutor.
+6. Generá el PDF: `python assets/plantilla/generar.py {{ID}}.final.md --out {{TRABAJO}}/corregidos/Actividad_{{N}} --preview`
+   y renombrá el PDF según CRITERIOS.md.
+7. Verificación (todas, y mirá TODAS las páginas del PDF; si no podés verlas, decilo):
+   - `python scripts/verificar_fidelidad.py cambios {{ID}}.base.md {{ID}}.final.md` -> cada diferencia debe estar en tu registro de cambios.
+   - `python scripts/verificar_fidelidad.py pdf {{ID}}.final.md <pdf>` -> sin diferencias y con todas las figuras.
+   - `python scripts/verificar_plantilla.py {{ID}}.final.md <pdf>` (con `--sin-persona` si CRITERIOS.md fija otro estilo).
+ENTREGABLES: el PDF en corregidos/Actividad_{{N}}/, {{ID}}.final.md en plantilla/Actividad_{{N}}/ y el informe de cambios habitual
+(+ salida de las tres verificaciones). Nunca "listo para subir": queda pendiente de la revisión manual del tutor.
+```
