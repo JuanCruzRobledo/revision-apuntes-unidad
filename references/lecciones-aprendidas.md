@@ -61,3 +61,16 @@ Leelas ante cualquier tropiezo. Cada una costó tiempo la primera vez.
     y corré `scripts/escaneo_privacidad.py`. Un push forzado publica en el feed de eventos el SHA viejo (`before`), así que reescribir
     el historial de un repo público no alcanza: hay que recrear el repo.
 
+## Plantilla única (teoría y TP)
+- **El PDF no se convierte con herramientas genéricas.** `markitdown` y similares pierden títulos, código, columnas, cuadros e
+  imágenes de un PDF de documento y mezclan columnas. Se usa `pdf_a_md.py` (PyMuPDF) y se comprueba con `verificar_fidelidad.py`.
+- **Un comentario HTML dentro de un bloque de código es contenido** (`<!-- Maven -->` en un pom). Los verificadores solo ignoran
+  las marcas propias de la skill (`<!-- REVISAR -->`, `<!-- Página N -->`).
+- **Las imágenes se incrustan en el HTML** (data URI); si no, el PDF sale con imágenes rotas y solo `verificar_fidelidad.py pdf`
+  lo detecta (cuenta las figuras del Markdown contra las del PDF).
+- **Un documento hecho con Gamma no es siempre una presentación**: A4 vertical con texto corrido es documento; 16:9 apaisado con
+  poco texto es presentación. Lo sugiere `clasificar_documento.py` y lo confirma el tutor.
+- **Los errores dentro de figuras y diagramas no se ven por texto**: el convertidor los recorta como imagen y los revisa el tutor.
+- **`<etiqueta>` suelta en un título o párrafo es HTML y el navegador la oculta** (`<persistence-unit>`, `<class>`). Los
+  convertidores escapan `<`, `>` y `&` en el texto corriente; dentro de bloques de código no hace falta. Lo detectó
+  `verificar_fidelidad.py pdf` en la prueba con un Word de Prog3: sin esa comprobación el PDF salía con palabras faltantes.

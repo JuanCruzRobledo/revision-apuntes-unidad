@@ -4,8 +4,9 @@ description: >
   Revisa y corrige el material de apuntes de una unidad de una materia del campus Moodle (TUP/UTN u otro): documentos Word,
   PDF de presentaciones (con o sin Gamma), pptx, markdown o texto que estén publicados en el aula. Valida calidad, estilo de
   redacción (por defecto tercera persona; configurable), tiempos verbales homogéneos, rastros de IA, errores temáticos y
-  técnicos, datos mínimos de portada (materia, unidad, tema y revisor) y bibliografía real, respetando el formato que el
-  archivo ya tiene. Usa un subagente DETECTOR y otro CORRECTOR por actividad y una compuerta OBLIGATORIA de revisión manual
+  técnicos, datos mínimos de portada (materia, unidad, tema y revisor) y bibliografía real. Los apuntes teóricos y TP se
+  reconstruyen sobre una plantilla única y salen siempre en PDF; el resto del material (presentaciones, Gamma) respeta el
+  formato que ya tiene. Usa un subagente DETECTOR y otro CORRECTOR por actividad y una compuerta OBLIGATORIA de revisión manual
   del tutor antes de subir.
   Usala SIEMPRE que el usuario quiera auditar, revisar, validar o corregir los apuntes o el material de una unidad, aunque
   no nombre la skill: "revisá los apuntes de la unidad 4", "auditá el material de Programación 1", "corregí los Word y los
@@ -39,14 +40,17 @@ automática no reemplaza que una persona mire cada archivo. Por eso:
 - No sube, edita ni borra nada en el aula (el campus es **solo lectura**).
 - No inventa bibliografía, capítulos, años, ediciones ni versiones: si no lo puede verificar, lo omite o lo avisa.
 - No modifica los originales: siempre trabaja sobre copias.
+- No aplica la plantilla a presentaciones (Gamma o no): solo a documentos de teoría y TP que el tutor confirma.
 
 ## Alcance y principios
 - **Solo se audita el material que está en el aula** (el que ve el alumno). Lo que exista solo en la carpeta local y no esté
   publicado se informa como "sobra", no se audita.
-- **Se respeta el formato que el archivo ya tiene.** No hay un formato estándar por ahora (habrá una plantilla más adelante):
-  se corrige el contenido (residuos de IA, redacción, errores técnicos, contraste con lo visto) y no se reformatea el
-  documento. Lo único estricto es la portada: materia, unidad, tema y **revisor** (quien hizo la auditoría). Ver
-  `references/formato-primera-hoja.md`.
+- **Teoría y TP: plantilla única** (`assets/plantilla/`). Se corrige el contenido igual que siempre, pero al regenerar el
+  documento se **reconstruye sobre la plantilla** (documento fuente -> Markdown -> plantilla -> PDF) y el resultado final es un
+  PDF. La plantilla se usa tal cual: no se rediseña. El contenido del tema no se quita ni se resume. Detalle (primera hoja,
+  estructura por tipo, bibliografía) en `references/formato-primera-hoja.md`.
+- **Presentaciones, Gamma y otros materiales: se respeta el formato que el archivo ya tiene.** Se corrige el contenido y no se
+  reformatea. Lo único estricto es la portada: materia, unidad, tema y **revisor** (quien hizo la auditoría).
 - **Cada materia y unidad trae material distinto.** No se presupone Gamma, PDF ni Word: se trabaja con lo que haya.
 - **Gamma es opcional**: todo lo específico de Gamma solo se activa si el aula tiene presentaciones de Gamma.
 - **Idioma y plataforma**: la skill está pensada para material en español y se probó en Windows. En macOS y Linux la
@@ -58,6 +62,9 @@ markdown o texto. El flujo es el mismo; lo que cambia es la herramienta:
 - **Word**: se extrae con `scripts/extraer_docx.py`, se corrige sobre una copia conservando el aspecto, se verifica con
   `scripts/verificar_docx.py`, y se **exporta a PDF** con `scripts/word_a_pdf.py` (ver Fase 6).
 - **PDF de Gamma** (opcional, solo si hay): marca de agua y edición de texto en el lugar. Leé `references/gamma-pdf.md`.
+- **Teoría o TP (Word o PDF de documento, A4 vertical con texto corrido)**: se convierte a Markdown (`scripts/docx_a_md.py` o
+  `scripts/pdf_a_md.py`), se audita y corrige el Markdown y se genera el PDF con la plantilla. Ver Fase 5. Un PDF hecho con Gamma
+  pero en formato documento (no apaisado) entra por acá; una presentación no.
 - **Otros PDF/pptx/texto**: se revisan por contenido y redacción; si no se pueden editar en el lugar, el corrector deja el
   texto exacto a cambiar por página/diapositiva para que el tutor lo corrija en la herramienta de origen.
 - **El Word formal es opcional**: si la unidad ya trae su documento, se revisa ese. Si no hay ninguno, **ofrecé** crearlo
@@ -76,14 +83,17 @@ markdown o texto. El flujo es el mismo; lo que cambia es la herramienta:
    **Estilo de redacción**: proponé el estilo por defecto (tercera persona e impersonal con "se", presente atemporal) y
    preguntá si lo mantiene o prefiere otro. Si elige otro, anotalo en `CRITERIOS.md` y corré los verificadores con
    `--sin-persona`.
-   **No preguntes** subtítulo, institución ni fecha: no hay formato estándar, se respeta lo que cada archivo ya tiene y no se
-   agrega nada nuevo a la portada. Tampoco preguntes la numeración del tema: se completa solo si falta (N = unidad, M = orden
-   de la actividad en el aula, que sale del inventario de la Fase 1).
+   **No preguntes** subtítulo, institución ni fecha: en teoría y TP los define la plantilla; en el resto del material se respeta lo
+   que cada archivo ya tiene y no se agrega nada nuevo a la portada. Tampoco preguntes la numeración del tema: en el material
+   sin plantilla se completa solo si falta (N = unidad, M = orden de la actividad en el aula, del inventario de la Fase 1).
 3. **Preflight**: corré `python scripts/preflight.py`. Si falta algo obligatorio, mostrale al tutor exactamente qué
    instalar y **no sigas** hasta resolverlo. Obligatorio: Python 3.10+ con PyMuPDF, python-docx y Pillow. Para leer el aula
    hace falta UNA de dos vías: la skill `tup-campus-navigator` (solo campus TUP) o Claude in Chrome con la sesión del tutor
    abierta en su campus. Recomendados: Word o LibreOffice (revisar layout) y youtube-transcript-api.
    Si no hay forma de revisar el layout, decilo en voz alta: esa revisión queda 100% en manos del tutor.
+   **Teoría y TP**: además hace falta lo de la plantilla (Chrome o Edge, `markdown`, `pygments`). Cuando la Fase 1 confirme que hay
+   teoría o TP, corré `python scripts/preflight.py --con-plantilla` y no sigas sin eso. Los datos de la primera hoja (materia,
+   unidad, revisor) ya se piden en esta fase.
 
 ### Fase 1 — Inventario del aula (solo lectura) → esperá el OK
 Recorré la unidad (introducción, actividades, práctica, microteaching, autoevaluación, encuesta) con la skill del campus
@@ -92,6 +102,10 @@ práctica y resolución, videos (título, id, duración), infografías y adjunto
 embebido en un label y no en una carpeta. Compará con la carpeta local y mostrá: coincide / falta / sobra, duplicados con
 sufijo "(1)", numeración inconsistente, actividades sin carpeta. **Frená y esperá el OK del tutor.** Detalle en
 `references/flujo-detallado.md`.
+**Tipo de cada documento**: sumá al inventario una columna `tipo` (`apunte`, `tp`, `presentación` u `otro`). Corré
+`python scripts/clasificar_documento.py <archivos>` para sugerirlo (PDF apaisado, link a gamma.app y poco texto = presentación;
+A4 vertical con texto corrido = documento) y que el tutor lo **confirme archivo por archivo**. Los que sean `apunte` o `tp` van por
+la plantilla; los demás siguen el flujo de siempre. Un TP no lleva bibliografía; un apunte sí.
 
 ### Fase 2 — Fuente de verdad de lo visto
 Prioridad: (1) transcripciones reales de los videos, (2) guiones, (3) descripción de la actividad en el aula. A grandes
@@ -111,7 +125,16 @@ Corré el ciclo completo (detector → corrector) en una sola actividad. Verific
 tutor qué se encontró, qué se corrigió y qué dudas quedan. Esperá su OK antes de lanzar el resto.
 
 ### Fase 5 — Resto de actividades en paralelo
-Un par detector/corrector por actividad, en paralelo, cada uno escribiendo solo en su carpeta. Las dudas que dejen:
+Un par detector/corrector por actividad, en paralelo, cada uno escribiendo solo en su carpeta.
+**Documentos de teoría o TP (el flujo es el mismo; solo cambia la fuente que lee el detector y lo que produce el corrector):**
+1. *Antes del detector*, vos convertís el documento a Markdown en `<trabajo>/plantilla/Actividad_N/` (`docx_a_md.py` o
+   `pdf_a_md.py`) y corrés `python scripts/verificar_fidelidad.py conversion <fuente> <id>.base.md`. **Tiene que dar "SIN
+   DIFERENCIAS"**: si falta texto, no se sigue; se corrige la conversión. Las figuras y los diagramas se recortan como imagen
+   y los mira el tutor. El `.base.md` no se modifica más.
+2. El **detector** audita el Markdown base (modo plantilla de `prompt-detector.md`) y escribe el informe de siempre.
+3. El **corrector** aplica el informe sobre una copia (`.final.md`), completa el encabezado de datos, regenera el PDF con
+   `assets/plantilla/generar.py` y verifica (modo plantilla de `prompt-corrector.md`). Si la bibliografía de un apunte no es
+   verificable, **el PDF no se genera** hasta resolverla. Las dudas que dejen:
 resolvelas con la información disponible (aula, código, guiones) y preguntale al tutor solo lo imposible de resolver.
 Si un subagente se corta, retomalo con `SendMessage` y revisá qué alcanzó a escribir antes de rehacer.
 
@@ -122,6 +145,9 @@ LibreOffice; avisa si el número de páginas no coincide o hay páginas en blanc
 2: armá una hoja de contactos con una fila por documento para detectar tablas cortadas, código desbordado o huecos. El PDF
 exportado es un entregable más y entra también en la revisión manual. **Leé en contexto cada coincidencia de patrón antes de reportarla**: muchas son falsos positivos
 ("usa" en tercera persona, "considera" como verbo del sujeto). La marca de agua se verifica por píxeles, no contando imágenes.
+**Teoría y TP**: además corré vos `verificar_fidelidad.py cambios` (toda diferencia entre `.base.md` y `.final.md` debe estar en el
+registro de cambios), `verificar_fidelidad.py pdf` y `verificar_plantilla.py`, y mirá **todas** las páginas del PDF (primera hoja,
+etiqueta, pie, cajas, código, tablas, figuras). El PDF de la plantilla es el entregable y entra en la revisión manual.
 
 ### Fase 7 — Compuerta de revisión manual (obligatoria)
 1. `python scripts/compuerta_revision.py generar --trabajo <trabajo>` crea `REVISION_MANUAL.md` con un casillero por archivo.
@@ -153,6 +179,7 @@ mínimos de portada y control de bibliografía: `references/formato-primera-hoja
   fuentes/{guiones,transcripciones}
   informes/      <id>_informe.md  <id>_cambios.md  gamma_<id>_cambios.md
   corregidos/Actividad_N/   AN-Documento-formal_<Tema>.docx   AN-1_<Titulo>.pdf  AN-2_...
+  plantilla/Actividad_N/    <id>.base.md  <id>.final.md  img/     (solo teoría y TP; el PDF final va en corregidos/)
 ```
 Numeración por actividad y sin sufijos "(1)" ni "(2)". Los duplicados se borran solo verificando el hash y avisando.
 
@@ -161,8 +188,8 @@ Numeración por actividad y sin sufijos "(1)" ni "(2)". Los duplicados se borran
 |---|---|
 | `references/flujo-detallado.md` | Antes de la Fase 1 y 2 (cómo recorrer el aula, límites del navegador) |
 | `references/criterios-redaccion.md` | Al armar CRITERIOS.md y al verificar |
-| `references/formato-primera-hoja.md` | Al corregir o crear un documento |
+| `references/formato-primera-hoja.md` | Al corregir o crear un documento (plantilla de teoría y TP, y portada del resto) |
 | `references/subagentes.md` | Antes de lanzar detector/corrector |
 | `references/gamma-pdf.md` | Solo si hay PDF de Gamma |
 | `references/lecciones-aprendidas.md` | Ante cualquier tropiezo |
-| `scripts/` | `preflight`, `extraer_docx`, `verificar_docx`, `verificar_pdf`, `word_a_pdf`, `transcribir_youtube`, `quitar_marca_gamma`, `gamma_editar`, `editar_pdf_texto`, `comparar_pdf`, `compuerta_revision` |
+| `scripts/` | `preflight`, `extraer_docx`, `verificar_docx`, `verificar_pdf`, `word_a_pdf`, `transcribir_youtube`, `clasificar_documento`, `docx_a_md`, `pdf_a_md`, `numerar_md`, `verificar_fidelidad`, `verificar_plantilla`, `quitar_marca_gamma`, `gamma_editar`, `editar_pdf_texto`, `comparar_pdf`, `compuerta_revision` |
